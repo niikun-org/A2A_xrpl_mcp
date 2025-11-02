@@ -1,0 +1,262 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-1984a1a429f6",
+    "createdAt": "2025-11-02T15:16:07.325139+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-02T15:16:07.325153+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-02T15:16:07.325170+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights bite the dusk\nFans roar, drums call through the stands\nGlory tastes of rain"
+      },
+      "tool_call_id": "call_pSfW371k8L7wfXR5rFg4L97O"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-02T15:16:07.325195+00:00",
+      "content": "Correct!!",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_pSfW371k8L7wfXR5rFg4L97O"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-02T15:16:07.325204+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights crown the dusk\nFans rise, drums echo through the stands\nRain hums over the field"
+      },
+      "tool_call_id": "call_RfFDb8eP0MuC4aKRAjhLWtKP"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-02T15:16:07.325216+00:00",
+      "content": "Correct!!",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_RfFDb8eP0MuC4aKRAjhLWtKP"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-02T15:16:07.325222+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights bite the dusk\nFans rise, drums shake seats\nGlory tastes of rain"
+      },
+      "tool_call_id": "call_vBuhoNV61jrgdytHfGUKBP8T"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-02T15:16:07.325230+00:00",
+      "content": "Correct!!",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_vBuhoNV61jrgdytHfGUKBP8T"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-02T15:16:07.325235+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Stadium lights inhale dusk\nCleats carve rain-washed turf at night\nCrowd swells, drums declare"
+      },
+      "tool_call_id": "call_E9QFQ5IVQmugy6SdyMl5PDkL"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-02T15:16:07.325242+00:00",
+      "content": "Correct!!",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_E9QFQ5IVQmugy6SdyMl5PDkL"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-02T15:16:07.325247+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Cleats kiss slick turf at night\nStadium breathes, drums rise and fall\nWhistle splits the rain"
+      },
+      "tool_call_id": "call_rglqg2UwH2s3ibVQC0uO5fG2"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-02T15:16:07.325254+00:00",
+      "content": "Correct!!",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_rglqg2UwH2s3ibVQC0uO5fG2"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-02T15:16:07.325259+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Goalposts glow at dusk\nCleats carve rain-washed turf tonight\nCrowd hums, breath held fast"
+      },
+      "tool_call_id": "call_b4tQ7zchedUsv4fmllB6cLYV"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-02T15:16:07.325266+00:00",
+      "content": "Correct!!",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_b4tQ7zchedUsv4fmllB6cLYV"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-02T15:16:07.325271+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Stadium sighs at dusk\nCleats carve rain-washed turf anew\nWhistle seals the night"
+      },
+      "tool_call_id": "call_ZEwIBc5bepuq3CCfSOQ70xAn"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-02T15:16:07.325277+00:00",
+      "content": "Correct!!",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_ZEwIBc5bepuq3CCfSOQ70xAn"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-02T15:16:07.325282+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Under bright arena lights\nA glove snaps to catch the ball\nCrowd breathes, rain taps night"
+      },
+      "tool_call_id": "call_ZZqTJQ3cmw6LQ4LYJrPWBvsi"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-02T15:16:07.325288+00:00",
+      "content": "Correct!!",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_ZZqTJQ3cmw6LQ4LYJrPWBvsi"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-02T15:16:07.325293+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights crown the dusk\nFans rise, drums call through the crowd\nGlory tastes of rain"
+      },
+      "tool_call_id": "call_UZoUTGivnpIXZisAZmcnDzct"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-02T15:16:07.325299+00:00",
+      "content": "Correct!!",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_UZoUTGivnpIXZisAZmcnDzct"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-02T15:16:07.325304+00:00",
+      "content": "Stadium hums at dusk\nLeather arcs through rain-lit night\nWhistle seals the moment",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 171,
+      "output_tokens": 1645
+    },
+    {
+      "turn": 2,
+      "input_tokens": 226,
+      "output_tokens": 2991
+    },
+    {
+      "turn": 3,
+      "input_tokens": 282,
+      "output_tokens": 1963
+    },
+    {
+      "turn": 4,
+      "input_tokens": 335,
+      "output_tokens": 1712
+    },
+    {
+      "turn": 5,
+      "input_tokens": 393,
+      "output_tokens": 1392
+    },
+    {
+      "turn": 6,
+      "input_tokens": 451,
+      "output_tokens": 2032
+    },
+    {
+      "turn": 7,
+      "input_tokens": 509,
+      "output_tokens": 1199
+    },
+    {
+      "turn": 8,
+      "input_tokens": 565,
+      "output_tokens": 1070
+    },
+    {
+      "turn": 9,
+      "input_tokens": 621,
+      "output_tokens": 2605
+    },
+    {
+      "turn": 10,
+      "input_tokens": 676,
+      "output_tokens": 1244
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "43b10e78082bfd87c859ca55766d4abfebda42e5686c63509754b641ed93a9f5",
+    "chunks": [
+      "2ce68a47c61ebb4a540b0c861efff313c4d0049b381b881a8ec52f9ac6e126e3",
+      "68616ec67b5b233b1926770475ede3dad35f1ae63d3b027aa93e6b33ba63b003"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

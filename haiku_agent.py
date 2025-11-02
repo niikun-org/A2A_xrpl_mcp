@@ -1,10 +1,11 @@
-from langchain_core.tools import tool
 import os
-from import load_dotenv
+from dotenv import load_dotenv
+
+from langchain.agents import create_agent
+from langchain_core.messages import HumanMessage
+from langchain_core.tools import tool
 
 load_dotenv()
-
-os
 
 def haiku_agent():
 
@@ -28,6 +29,8 @@ def haiku_agent():
     )
 
     result = agent.invoke({"messages":"please write a poem."})
+
+    print(result)
 
     return result
 
