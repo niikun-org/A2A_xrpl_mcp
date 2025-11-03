@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2A Trace Viewer - トレース可視化ツール</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7fafc;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .upload-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .upload-box {
+            border: 3px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-box:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+
+        .upload-box.dragover {
+            border-color: #667eea;
+            background: #edf2f7;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #4a5568;
+            min-width: 150px;
+        }
+
+        .info-value {
+            color: #2d3748;
+            word-break: break-all;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 20px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #667eea;
+        }
+
+        .event-type {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .event-type.human {
+            background: #c3dafe;
+            color: #2b6cb0;
+        }
+
+        .event-type.ai {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .event-type.tool {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .event-content {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #68d391;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .merkle-box {
+            background: #f0fff4;
+            border: 2px solid #48bb78;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .merkle-root {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #22543d;
+            word-break: break-all;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a0aec0;
+        }
+
+        .empty-state-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        .actors-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .actor-badge {
+            padding: 8px 15px;
+            background: #edf2f7;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #4a5568;
+            border: 2px solid #cbd5e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 A2A Trace Viewer</h1>
+            <p>トレースファイルを可視化・検証するツール</p>
+        </div>
+
+        <div class="upload-section">
+            <div class="upload-box" id="uploadBox" onclick="document.getElementById('fileInput').click()">
+                <div class="empty-state-icon">📁</div>
+                <h3>トレースファイル（JSON）をドロップまたはクリック</h3>
+                <p style="color: #a0aec0; margin-top: 10px;">traces/session-*.json ファイルを選択してください</p>
+            </div>
+            <input type="file" id="fileInput" accept=".json">
+        </div>
+
+        <div id="content" style="display: none;">
+            <div class="stats-grid" style="margin-bottom: 30px;">
+                <div class="stat-card">
+                    <div class="stat-value" id="eventCount">0</div>
+                    <div class="stat-label">イベント数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="tokenCount">0</div>
+                    <div class="stat-label">総トークン数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="actorCount">0</div>
+                    <div class="stat-label">参加者数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="chunkCount">0</div>
+                    <div class="stat-label">チャンク数</div>
+                </div>
+            </div>
+
+            <div class="main-grid">
+                <div class="section">
+                    <h2 class="section-title">📋 セッション情報</h2>
+                    <div class="info-grid" id="sessionInfo"></div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">🤖 モデル情報</h2>
+                    <div class="info-grid" id="modelInfo"></div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 30px;">
+                <h2 class="section-title">👥 参加者</h2>
+                <div class="actors-list" id="actorsList"></div>
+            </div>
+
+            <div class="section" style="margin-top: 30px;">
+                <h2 class="section-title">🔐 ハッシュ情報</h2>
+                <div class="info-grid" id="hashingInfo"></div>
+                <div class="merkle-box">
+                    <strong>🌳 Merkle Root:</strong>
+                    <div class="merkle-root" id="merkleRoot"></div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 30px;">
+                <h2 class="section-title">⏱️ イベントタイムライン</h2>
+                <div class="timeline" id="timeline"></div>
+            </div>
+
+            <div class="section" style="margin-top: 30px;">
+                <h2 class="section-title">📊 使用量統計</h2>
+                <div id="usageInfo"></div>
+            </div>
+
+            <div class="section" style="margin-top: 30px;">
+                <h2 class="section-title">💻 生JSON</h2>
+                <button class="btn btn-primary" onclick="downloadJSON()">📥 ダウンロード</button>
+                <div class="code-block" id="rawJSON"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTrace = null;
+
+        const uploadBox = document.getElementById('uploadBox');
+        const fileInput = document.getElementById('fileInput');
+
+        // Drag and drop
+        uploadBox.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBox.classList.add('dragover');
+        });
+
+        uploadBox.addEventListener('dragleave', () => {
+            uploadBox.classList.remove('dragover');
+        });
+
+        uploadBox.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBox.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) loadFile(file);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) loadFile(file);
+        });
+
+        function loadFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const trace = JSON.parse(e.target.result);
+                    currentTrace = trace;
+                    displayTrace(trace);
+                } catch (error) {
+                    alert('JSONファイルの読み込みに失敗しました: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function displayTrace(trace) {
+            document.getElementById('content').style.display = 'block';
+
+            // Stats
+            const totalTokens = trace.usage ? trace.usage.reduce((sum, u) => sum + u.input_tokens + u.output_tokens, 0) : 0;
+            document.getElementById('eventCount').textContent = trace.events.length;
+            document.getElementById('tokenCount').textContent = totalTokens.toLocaleString();
+            document.getElementById('actorCount').textContent = trace.session.actors.length;
+            document.getElementById('chunkCount').textContent = trace.hashing.chunks.length;
+
+            // Session info
+            const sessionInfo = document.getElementById('sessionInfo');
+            sessionInfo.innerHTML = `
+                <div class="info-item">
+                    <div class="info-label">セッションID:</div>
+                    <div class="info-value">${trace.session.id}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">作成日時:</div>
+                    <div class="info-value">${new Date(trace.session.createdAt).toLocaleString('ja-JP')}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">トレースバージョン:</div>
+                    <div class="info-value">${trace.traceVersion}</div>
+                </div>
+            `;
+
+            // Model info
+            const modelInfo = document.getElementById('modelInfo');
+            modelInfo.innerHTML = `
+                <div class="info-item">
+                    <div class="info-label">モデル名:</div>
+                    <div class="info-value">${trace.model.name}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">プロバイダー:</div>
+                    <div class="info-value">${trace.model.provider}</div>
+                </div>
+            `;
+
+            // Actors
+            const actorsList = document.getElementById('actorsList');
+            actorsList.innerHTML = trace.session.actors.map(actor =>
+                `<div class="actor-badge">${actor}</div>`
+            ).join('');
+
+            // Hashing info
+            const hashingInfo = document.getElementById('hashingInfo');
+            hashingInfo.innerHTML = `
+                <div class="info-item">
+                    <div class="info-label">アルゴリズム:</div>
+                    <div class="info-value">${trace.hashing.algorithm}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">チャンクサイズ:</div>
+                    <div class="info-value">${trace.hashing.chunk_size} bytes</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">チャンク数:</div>
+                    <div class="info-value">${trace.hashing.chunks.length}</div>
+                </div>
+            `;
+            document.getElementById('merkleRoot').textContent = trace.hashing.chunkMerkleRoot;
+
+            // Timeline
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = trace.events.map((event, index) => {
+                let typeClass = '';
+                let typeLabel = '';
+
+                if (event.type === 'human_message') {
+                    typeClass = 'human';
+                    typeLabel = '👤 ユーザー';
+                } else if (event.type === 'ai_message') {
+                    typeClass = 'ai';
+                    typeLabel = '🤖 AI応答';
+                } else if (event.type === 'ai_tool_call') {
+                    typeClass = 'tool';
+                    typeLabel = '🔧 ツール呼び出し';
+                } else if (event.type === 'tool_result') {
+                    typeClass = 'tool';
+                    typeLabel = '✅ ツール結果';
+                } else {
+                    typeClass = 'ai';
+                    typeLabel = event.type;
+                }
+
+                let content = '';
+                if (event.content) {
+                    content = event.content.length > 200 ? event.content.substring(0, 200) + '...' : event.content;
+                } else if (event.tool) {
+                    content = `Tool: ${event.tool}`;
+                    if (event.args) {
+                        content += `\nArgs: ${JSON.stringify(event.args, null, 2)}`;
+                    }
+                }
+
+                return `
+                    <div class="timeline-item">
+                        <div class="event-type ${typeClass}">${typeLabel}</div>
+                        <div style="font-size: 0.9em; color: #718096; margin-bottom: 5px;">
+                            ${event.ts ? new Date(event.ts).toLocaleString('ja-JP') : `Event ${index + 1}`}
+                        </div>
+                        <div class="event-content">${content}</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Usage
+            const usageInfo = document.getElementById('usageInfo');
+            if (trace.usage && trace.usage.length > 0) {
+                usageInfo.innerHTML = trace.usage.map(u => `
+                    <div class="info-item">
+                        <div class="info-label">ターン ${u.turn}:</div>
+                        <div class="info-value">
+                            入力: ${u.input_tokens.toLocaleString()} tokens,
+                            出力: ${u.output_tokens.toLocaleString()} tokens
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                usageInfo.innerHTML = '<p style="color: #a0aec0;">使用量情報なし</p>';
+            }
+
+            // Raw JSON
+            document.getElementById('rawJSON').textContent = JSON.stringify(trace, null, 2);
+
+            // Scroll to content
+            document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function downloadJSON() {
+            if (!currentTrace) return;
+
+            const dataStr = JSON.stringify(currentTrace, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `trace-${currentTrace.session.id}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

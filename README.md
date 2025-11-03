@@ -29,7 +29,33 @@ LLMエージェントの実行ログを **改ざん検証可能** な形で記�
 
 ## デモの実行方法
 
-### 🎓 わかりやすい解説デモ（推奨！初めての方はこちら）
+### 🌐 インタラクティブWebデモ（最もわかりやすい！）
+
+ブラウザで以下のHTMLファイルを開いてください：
+
+#### 1. システム全体の動きを見る
+```bash
+open demo_interactive.html
+```
+**[demo_interactive.html](demo_interactive.html)** - アニメーション付きの解説デモ
+- 🎬 6ステップのアニメーション
+- ▶️ 自動再生機能
+- ⌨️ キーボード操作（矢印キー、スペースキー）
+- 📊 リアルタイムの進捗バー
+
+#### 2. 実際のトレースファイルを見る
+```bash
+open trace_viewer.html
+```
+**[trace_viewer.html](trace_viewer.html)** - トレースファイルの可視化ツール
+- 📁 ドラッグ&ドロップでJSONファイルを読み込み
+- 📊 統計情報の表示
+- ⏱️ イベントタイムライン
+- 🔐 Merkle Root検証情報
+
+---
+
+### 🎓 ターミナルでの対話型デモ
 
 ```bash
 uv run demo_simple_explanation.py

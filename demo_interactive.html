@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2A Trace Anchoring - インタラクティブデモ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .demo-flow {
+            display: grid;
+            gap: 20px;
+        }
+
+        .step-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            opacity: 0.3;
+            transform: scale(0.95);
+            transition: all 0.5s ease;
+        }
+
+        .step-card.active {
+            opacity: 1;
+            transform: scale(1);
+            border: 3px solid #667eea;
+        }
+
+        .step-card.completed {
+            opacity: 0.7;
+            background: #f0fff4;
+            border: 2px solid #48bb78;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .step-card.completed .step-number {
+            background: #48bb78;
+        }
+
+        .step-title {
+            font-size: 1.5em;
+            color: #2d3748;
+        }
+
+        .step-content {
+            margin-left: 65px;
+        }
+
+        .step-description {
+            color: #4a5568;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #68d391;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .data-box {
+            background: #edf2f7;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .arrow-down {
+            text-align: center;
+            color: white;
+            font-size: 2em;
+            margin: 10px 0;
+            opacity: 0;
+            animation: fadeInDown 0.5s ease forwards;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: #d35400;
+        }
+
+        .checkmark {
+            color: #48bb78;
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        .animation-box {
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #4a5568;
+        }
+
+        .pulse {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2d3748;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 A2A Trace Anchoring</h1>
+            <p>AIエージェントの実行記録を改ざん不可能にする仕組み</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="demo-flow" id="demoFlow">
+            <!-- Steps will be dynamically added here -->
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-secondary" id="resetBtn">🔄 リセット</button>
+            <button class="btn btn-primary" id="nextBtn">▶️ 次へ</button>
+            <button class="btn btn-primary" id="autoBtn">⚡ 自動再生</button>
+        </div>
+    </div>
+
+    <script>
+        const steps = [
+            {
+                title: "AIエージェント実行",
+                description: "ユーザーがAIエージェントに「詩を書いて」とリクエスト",
+                content: `
+<div class="animation-box" id="step0-anim">
+    <span class="pulse">🤖 AIエージェントが動作中...</span>
+</div>
+<div class="data-box">
+    <strong>入力:</strong> "please write a poem."<br>
+    <strong>出力:</strong> Haiku (5-7-5形式の詩)<br>
+    <strong>ツール呼び出し:</strong> check_haiku_lines()
+</div>
+<div class="code-block">ユーザー: 「詩を書いてください」
+↓
+AI: ツール「check_haiku_lines」を呼び出し
+↓
+AI: Haikuを生成
+↓
+結果: "Field lights bite the dusk
+      Fans roar, drums call through the stands
+      Glory tastes of rain"</div>
+                `
+            },
+            {
+                title: "A2A標準形式に変換",
+                description: "実行ログを国際標準のA2A形式（JSON）に変換",
+                content: `
+<div class="animation-box" id="step1-anim">
+    <span class="pulse">📋 変換処理中...</span>
+</div>
+<div class="stats">
+    <div class="stat-card">
+        <div class="stat-label">セッションID</div>
+        <div class="stat-value">abc123</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">イベント数</div>
+        <div class="stat-value">20</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">トークン数</div>
+        <div class="stat-value">1,562</div>
+    </div>
+</div>
+<div class="code-block">{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-abc123",
+    "actors": ["user", "assistant", "tool"]
+  },
+  "events": [
+    {"type": "human_message", "content": "..."},
+    {"type": "ai_tool_call", "tool": "check_haiku_lines"},
+    {"type": "ai_message", "content": "..."}
+  ]
+}</div>
+                `
+            },
+            {
+                title: "Merkle Root計算",
+                description: "データの「指紋」を作成（改ざん検知用）",
+                content: `
+<div class="animation-box" id="step2-anim">
+    <span class="pulse">🔐 ハッシュ計算中...</span>
+</div>
+<div class="data-box">
+    <strong>🔧 処理:</strong><br>
+    1️⃣ JSONを4096バイトのチャンクに分割<br>
+    2️⃣ 各チャンクをSHA256でハッシュ化<br>
+    3️⃣ ハッシュツリーを構築<br>
+    4️⃣ Merkle Rootを取得
+</div>
+<div class="code-block">Chunk 1: {...部分1...} → hash1: a3f5b8c...
+Chunk 2: {...部分2...} → hash2: d9e2f1a...
+↓
+Merkle Root: <span class="highlight">43b10e78082bfd87...</span></div>
+<div class="data-box">
+    💡 <strong>ポイント:</strong> 1文字でも変更されると、全く違う値になる！
+</div>
+                `
+            },
+            {
+                title: "IPFS保存",
+                description: "分散ストレージ（IPFS）に永久保存",
+                content: `
+<div class="animation-box" id="step3-anim">
+    <span class="pulse">🌐 IPFSにアップロード中...</span>
+</div>
+<div class="data-box">
+    <strong>IPFS = InterPlanetary File System</strong><br>
+    ・中央サーバーなし（分散型）<br>
+    ・世界中のノードに保存<br>
+    ・CID（コンテンツID）で特定
+</div>
+<div class="code-block">trace.json → IPFS Network
+↓
+CID取得: <span class="highlight">bafybeigdyrzt5sfp7udm7hu76uh7y26nf...</span>
+↓
+✅ 世界中のどのIPFSノードからでも取得可能！</div>
+<div class="stats">
+    <div class="stat-card">
+        <div class="stat-label">保存先</div>
+        <div class="stat-value">分散</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">コスト</div>
+        <div class="stat-value">無料</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">永続性</div>
+        <div class="stat-value">高</div>
+    </div>
+</div>
+                `
+            },
+            {
+                title: "XRPL記録",
+                description: "ブロックチェーン（XRP Ledger）に記録",
+                content: `
+<div class="animation-box" id="step4-anim">
+    <span class="pulse">📘 ブロックチェーンに記録中...</span>
+</div>
+<div class="data-box">
+    <strong>XRP Ledger = 超高速・低コストなブロックチェーン</strong><br>
+    ・確定時間: <span class="highlight">3-5秒</span><br>
+    ・手数料: <span class="highlight">約0.0001円</span><br>
+    ・公開台帳: 誰でも閲覧可能
+</div>
+<div class="code-block">トランザクション作成:
+  金額: 1 drop (0.000001 XRP)
+  Memo: {
+    "cid": "bafybeigdyrzt5...",
+    "root": "43b10e78082bfd...",
+    "timestamp": 1730544060
+  }
+↓
+TX Hash: <span class="highlight">1A2B3C4D5E6F...</span>
+↓
+✅ ブロックチェーンに永久記録！</div>
+<div class="stats">
+    <div class="stat-card">
+        <div class="stat-label">確定時間</div>
+        <div class="stat-value">3-5秒</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">手数料</div>
+        <div class="stat-value">0.0001円</div>
+    </div>
+</div>
+                `
+            },
+            {
+                title: "検証",
+                description: "誰でも改ざんをチェックできる",
+                content: `
+<div class="animation-box" id="step5-anim">
+    <span class="pulse">🔍 検証中...</span>
+</div>
+<div class="data-box">
+    <strong>🔍 検証フロー:</strong><br>
+    1️⃣ XRPLからトランザクション取得<br>
+    2️⃣ MemoからCIDとMerkle Root抽出<br>
+    3️⃣ IPFSからCIDでトレース取得<br>
+    4️⃣ Merkle Root再計算<br>
+    5️⃣ 比較 → 一致すれば改ざんなし！
+</div>
+<div class="code-block">TX Hash → XRPL → Memo取得
+↓
+CID: bafybeigdyrzt5...
+Merkle Root: 43b10e78082bfd...
+↓
+IPFS → Trace取得 → Merkle Root再計算
+↓
+保存Root == 計算Root ?
+↓
+<span class="highlight" style="color: #48bb78;">✓ 一致 → 改ざんなし！</span></div>
+<div class="data-box" style="border-left-color: #48bb78; background: #f0fff4;">
+    <span class="checkmark">✓</span> <strong>検証成功！</strong><br>
+    このトレースは改ざんされていません。<br>
+    2025/11/03 12:00:00 に記録されました。
+</div>
+                `
+            }
+        ];
+
+        let currentStep = -1;
+        let autoPlayInterval = null;
+
+        function initDemo() {
+            const demoFlow = document.getElementById('demoFlow');
+            steps.forEach((step, index) => {
+                const stepCard = document.createElement('div');
+                stepCard.className = 'step-card';
+                stepCard.id = `step-${index}`;
+                stepCard.innerHTML = `
+                    <div class="step-header">
+                        <div class="step-number">${index + 1}</div>
+                        <div class="step-title">${step.title}</div>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-description">${step.description}</div>
+                        ${step.content}
+                    </div>
+                `;
+                demoFlow.appendChild(stepCard);
+
+                if (index < steps.length - 1) {
+                    const arrow = document.createElement('div');
+                    arrow.className = 'arrow-down';
+                    arrow.id = `arrow-${index}`;
+                    arrow.innerHTML = '↓';
+                    arrow.style.display = 'none';
+                    demoFlow.appendChild(arrow);
+                }
+            });
+        }
+
+        function nextStep() {
+            if (currentStep >= 0) {
+                document.getElementById(`step-${currentStep}`).classList.remove('active');
+                document.getElementById(`step-${currentStep}`).classList.add('completed');
+            }
+
+            currentStep++;
+
+            if (currentStep >= steps.length) {
+                currentStep = steps.length - 1;
+                stopAutoPlay();
+                return;
+            }
+
+            const stepCard = document.getElementById(`step-${currentStep}`);
+            stepCard.classList.add('active');
+            stepCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            if (currentStep > 0) {
+                const arrow = document.getElementById(`arrow-${currentStep - 1}`);
+                arrow.style.display = 'block';
+            }
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function reset() {
+            currentStep = -1;
+            document.querySelectorAll('.step-card').forEach(card => {
+                card.classList.remove('active', 'completed');
+            });
+            document.querySelectorAll('.arrow-down').forEach(arrow => {
+                arrow.style.display = 'none';
+            });
+            updateProgress();
+            stopAutoPlay();
+        }
+
+        function startAutoPlay() {
+            if (autoPlayInterval) return;
+
+            const autoBtn = document.getElementById('autoBtn');
+            autoBtn.textContent = '⏸️ 停止';
+
+            autoPlayInterval = setInterval(() => {
+                if (currentStep >= steps.length - 1) {
+                    stopAutoPlay();
+                } else {
+                    nextStep();
+                }
+            }, 3000);
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+                const autoBtn = document.getElementById('autoBtn');
+                autoBtn.textContent = '⚡ 自動再生';
+            }
+        }
+
+        function toggleAutoPlay() {
+            if (autoPlayInterval) {
+                stopAutoPlay();
+            } else {
+                if (currentStep >= steps.length - 1) {
+                    reset();
+                }
+                startAutoPlay();
+            }
+        }
+
+        // Event listeners
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            stopAutoPlay();
+            nextStep();
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', reset);
+        document.getElementById('autoBtn').addEventListener('click', toggleAutoPlay);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                stopAutoPlay();
+                nextStep();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                stopAutoPlay();
+                if (currentStep > 0) {
+                    currentStep--;
+                    reset();
+                    for (let i = 0; i <= currentStep; i++) {
+                        nextStep();
+                    }
+                }
+            } else if (e.key === 'r' || e.key === 'R') {
+                reset();
+            } else if (e.key === 'a' || e.key === 'A') {
+                toggleAutoPlay();
+            }
+        });
+
+        // Initialize
+        initDemo();
+    </script>
+</body>
+</html>
