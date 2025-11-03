@@ -29,22 +29,33 @@ def haiku_agent_with_ipfs():
     """Run haiku_agent, capture trace, and store in IPFS"""
 
     @tool
-    def check_haiku_lines(text: str):
-        """check if the given haiku text has exactly 3 lines.
-        returns None if it is correct, otherwise an error message.
+    def check_haiku_lines(text: str) -> str:
+        """Check if the given haiku text has exactly 3 lines.
+
+        Args:
+            text: The haiku text to check
+
+        Returns:
+            "OK" if the haiku has exactly 3 lines, otherwise an error message.
         """
         lines = [line.strip() for line in text.strip().splitlines() if line.strip()]
-        print(f"checking haiku it has {len(lines)} lines.:\n {text}")
+        print(f"✓ Checking haiku ({len(lines)} lines):\n{text}\n")
         if len(lines) == 3:
-            return "Correct!!"
+            return "OK"
         else:
-            return f"expected 3 lines, but got {len(lines)}"
+            return f"Error: expected 3 lines, but got {len(lines)}. Please write exactly 3 lines."
 
     # Create agent
     agent = create_agent(
         model="openai:gpt-5-nano",
         tools=[check_haiku_lines],
-        system_prompt="You are a sports poet who only writes Haiku. You always check your answer."
+        system_prompt="""You are a sports poet who writes Haiku (3 lines).
+
+Important rules:
+1. Write ONLY ONE haiku
+2. Use check_haiku_lines tool ONCE to verify it has 3 lines
+3. If the tool returns "OK", STOP immediately and present the haiku
+4. Do NOT generate multiple haikus"""
     )
 
     # Run agent with recursion limit
