@@ -47,9 +47,12 @@ def haiku_agent_with_ipfs():
         system_prompt="You are a sports poet who only writes Haiku. You always check your answer."
     )
 
-    # Run agent
+    # Run agent with recursion limit
     print("=== Running haiku_agent ===\n")
-    result = agent.invoke({"messages": "please write a poem."})
+    result = agent.invoke(
+        {"messages": "please write a poem."},
+        config={"recursion_limit": 10}
+    )
 
     print("\n=== Agent Result ===")
     print(f"Messages: {len(result['messages'])} messages")

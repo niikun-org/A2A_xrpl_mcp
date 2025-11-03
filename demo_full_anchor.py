@@ -53,12 +53,15 @@ def full_anchor_demo():
         system_prompt="You are a sports poet who only writes Haiku. You always check your answer."
     )
 
-    # Run agent
+    # Run agent with recursion limit
     print("="*70)
     print("PHASE 3: Full A2A Trace Anchoring - IPFS + XRPL")
     print("="*70)
     print("\n=== Step 1: Running haiku_agent ===\n")
-    result = agent.invoke({"messages": "please write a poem."})
+    result = agent.invoke(
+        {"messages": "please write a poem."},
+        config={"recursion_limit": 10}
+    )
 
     print("\n=== Step 2: Building A2A Trace ===")
     trace = TraceBuilder.from_langchain_result(result)
