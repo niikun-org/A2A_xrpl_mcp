@@ -51,7 +51,7 @@ def haiku_agent_with_ipfs():
     print("=== Running haiku_agent ===\n")
     result = agent.invoke(
         {"messages": "please write a poem."},
-        config={"recursion_limit": 10}
+        config={"recursion_limit": 25}
     )
 
     print("\n=== Agent Result ===")

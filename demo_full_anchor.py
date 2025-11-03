@@ -60,7 +60,7 @@ def full_anchor_demo():
     print("\n=== Step 1: Running haiku_agent ===\n")
     result = agent.invoke(
         {"messages": "please write a poem."},
-        config={"recursion_limit": 10}
+        config={"recursion_limit": 25}
     )
 
     print("\n=== Step 2: Building A2A Trace ===")
