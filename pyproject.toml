@@ -9,4 +9,6 @@ dependencies = [
     "langchain-openai>=1.0.1",
     "langgraph>=1.0.2",
     "python-dotenv>=1.2.1",
+    "ipfshttpclient>=0.8.0a2",
+    "xrpl-py>=2.0.0",
 ]
