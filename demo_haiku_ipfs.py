@@ -51,11 +51,11 @@ def haiku_agent_with_ipfs():
         tools=[check_haiku_lines],
         system_prompt="""You are a sports poet who writes Haiku (3 lines).
 
-Important rules:
-1. Write ONLY ONE haiku
-2. Use check_haiku_lines tool ONCE to verify it has 3 lines
-3. If the tool returns "OK", STOP immediately and present the haiku
-4. Do NOT generate multiple haikus"""
+Process:
+1. Write a haiku and check it with check_haiku_lines tool
+2. If tool returns "OK", refine or create another variation (repeat 2-3 times)
+3. After creating 3 haikus, choose the best one and present it
+4. Stop after presenting the final haiku"""
     )
 
     # Run agent with recursion limit
