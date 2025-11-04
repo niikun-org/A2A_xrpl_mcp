@@ -146,7 +146,14 @@
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-top: 30px;
+            margin: 20px 0;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
         }
 
         .btn {
@@ -279,18 +286,18 @@
             <p>AIエージェントの実行記録を改ざん不可能にする仕組み</p>
         </div>
 
+        <div class="controls">
+            <button class="btn btn-secondary" id="resetBtn">🔄 リセット</button>
+            <button class="btn btn-primary" id="nextBtn">▶️ 次へ</button>
+            <button class="btn btn-primary" id="autoBtn">⚡ 自動再生</button>
+        </div>
+
         <div class="progress-bar">
             <div class="progress-fill" id="progressBar"></div>
         </div>
 
         <div class="demo-flow" id="demoFlow">
             <!-- Steps will be dynamically added here -->
-        </div>
-
-        <div class="controls">
-            <button class="btn btn-secondary" id="resetBtn">🔄 リセット</button>
-            <button class="btn btn-primary" id="nextBtn">▶️ 次へ</button>
-            <button class="btn btn-primary" id="autoBtn">⚡ 自動再生</button>
         </div>
     </div>
 
@@ -568,7 +575,7 @@ IPFS → Trace取得 → Merkle Root再計算
                 } else {
                     nextStep();
                 }
-            }, 3000);
+            }, 6000); // 3秒から6秒に変更
         }
 
         function stopAutoPlay() {
