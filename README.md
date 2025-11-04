@@ -82,6 +82,21 @@ uv run demo_haiku_trace.py
 #### 1. IPFSノードを起動
 
 ```bash
+# 新規起動
+docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
+```
+
+**注意:** すでにIPFSコンテナが存在する場合のトラブルシューティング：
+
+```bash
+# コンテナの状態を確認
+docker ps -a | grep ipfs
+
+# 停止している場合は再起動
+docker start ipfs
+
+# エラーが出る場合は削除して再作成
+docker rm -f ipfs
 docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
 ```
 
@@ -96,8 +111,17 @@ uv run demo_haiku_ipfs.py
 #### 1. IPFSノードを起動
 
 ```bash
+# コンテナの状態を確認
+docker ps -a | grep ipfs
+
+# 停止している場合は再起動
+docker start ipfs
+
+# 存在しない場合は新規作成
 docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
 ```
+
+**注意:** Phase 2で既にIPFSを起動している場合、そのまま使えます。
 
 #### 2. XRPL Testnetアカウントを取得
 
@@ -206,12 +230,20 @@ cat traces/session-*.json | jq .
 #### IPFSから取得して検証
 
 ```bash
-# CIDを使ってトレースを取得
+# Pythonで検証（推奨）
+uv run python -c "from a2a_anchor.ipfs_client import create_ipfs_client; client = create_ipfs_client(); trace = client.get_json('<CID>'); print(f\"Session: {trace['session']['id']}\"); print(f\"Merkle Root: {trace['hashing']['chunkMerkleRoot']}\")"
+
+# または、IPFSゲートウェイ経由（ポート8080が公開されている場合）
 curl http://localhost:8080/ipfs/<CID> | jq .
 
-# Pythonで検証
-uv run python -c "from a2a_anchor.ipfs_client import create_ipfs_client; client = create_ipfs_client(); trace = client.get_json('<CID>'); print(f\"Session: {trace['session']['id']}\"); print(f\"Merkle Root: {trace['hashing']['chunkMerkleRoot']}\")"
+# 公開IPFSゲートウェイを使う場合
+curl https://ipfs.io/ipfs/<CID> | jq .
 ```
+
+**注意:** GitHub Codespacesを使用している場合：
+1. VSCodeの「ポート」タブを開く
+2. ポート8080を見つけて「公開範囲」を「Public」に変更
+3. または、Pythonから直接IPFSにアクセス（上記のコマンド）
 
 #### XRPLトランザクションから完全検証
 
