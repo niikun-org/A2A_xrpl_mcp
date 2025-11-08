@@ -156,6 +156,5 @@ a2a verify --tx <tx_hash>
 ## 参考
 
 - 詳細仕様: [a2a_xrpl_spec.md](./a2a_xrpl_spec.md)
-- A2Aプロトコル: https://github.com/anthropics/anthropic-tools/tree/main/schemas/a2a
 - XRPL: https://xrpl.org/
 - IPFS: https://ipfs.tech/
