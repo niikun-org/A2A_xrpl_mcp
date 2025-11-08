@@ -8,7 +8,8 @@ LLMエージェントの実行ログを **改ざん検証可能** な形で記�
 
 1. **標準化**: A2A形式（a2a-0.1）のJSON形式で記録
 2. **完全性保証**: Merkle Rootによるハッシュ検証
-3. **将来的に**: IPFS + XRPL台帳に記録して改ざん検証
+3. **分散保存**: IPFS（分散ファイルシステム）に保存
+4. **ブロックチェーン記録**: XRPL台帳に記録して改ざん検証可能
 
 ## 現在の実装状況
 
@@ -196,27 +197,47 @@ Phase 1, 2の出力に加えて：
 === Step 5: Anchoring to IPFS + XRPL ===
 Uploading to IPFS...
 Anchoring to XRPL Testnet...
+(This may take 4-5 seconds for ledger validation...)
 
 ✓ Anchoring Complete!
-  Session ID: session-XXXXX
-  IPFS CID: bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi
-  XRPL TX Hash: 1A2B3C4D5E6F...
-  Ledger Index: 12345678
-  Merkle Root: 43b10e78082bfd87c859ca55766d4abfebda42e5686c63509754b641ed93a9f5
+  Session ID: session-c6258f2777c2
+  IPFS CID: QmSYKU3iV1u53RP2jCbQV9coDJRLJYoiNJTdLyDUTYGGHT
+  IPFS URL: ipfs://QmSYKU3iV1u53RP2jCbQV9coDJRLJYoiNJTdLyDUTYGGHT
+  Gateway URL: http://127.0.0.1:8080/ipfs/QmSYKU3iV1u53RP2jCbQV9coDJRLJYoiNJTdLyDUTYGGHT
+  XRPL TX Hash: 8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21
+  Ledger Index: 12180011
+  Merkle Root: e5d295ed807b7881eb2e2e977a04e9922c991f736dbe80a059846aa5e1aef673
+  Timestamp: 1762610214
 
 === Step 6: Verifying Anchored Trace ===
+Verifying transaction: 8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21
 1. Retrieving memo from XRPL...
 2. Fetching trace from IPFS...
 3. Recalculating Merkle Root...
 4. Comparing with anchored root...
 
+======================================================================
 ✓ VERIFICATION PASSED
-  Expected Root: 43b10e78082bfd87c859ca55766d4abfebda42e5686c63509754b641ed93a9f5
-  Computed Root: 43b10e78082bfd87c859ca55766d4abfebda42e5686c63509754b641ed93a9f5
+======================================================================
+  Session ID: session-c6258f2777c2
+  IPFS CID: QmSYKU3iV1u53RP2jCbQV9coDJRLJYoiNJTdLyDUTYGGHT
+  Expected Root: e5d295ed807b7881eb2e2e977a04e9922c991f736dbe80a059846aa5e1aef673
+  Computed Root: e5d295ed807b7881eb2e2e977a04e9922c991f736dbe80a059846aa5e1aef673
   Match: ✓ YES
+  Model: gpt-5-nano-2025-08-07
+  Events: 8
+  Chunks: 1
+
+======================================================================
+SUCCESS: Complete A2A Trace Anchoring
+======================================================================
+
+Local File: traces/session-c6258f2777c2.json
+IPFS CID: QmSYKU3iV1u53RP2jCbQV9coDJRLJYoiNJTdLyDUTYGGHT
+XRPL TX: 8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21
 
 Explore on XRPL:
-  https://testnet.xrpl.org/transactions/1A2B3C4D5E6F...
+  https://testnet.xrpl.org/transactions/8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21
 ```
 
 ### 4. トレースの検証
@@ -248,21 +269,79 @@ curl https://ipfs.io/ipfs/<CID> | jq .
 #### XRPLトランザクションから完全検証
 
 ```bash
-# トランザクションハッシュから検証
+# トランザクションハッシュから検証（実際の例）
 uv run python -c "
 from a2a_anchor.xrpl_client import create_xrpl_client
 from a2a_anchor.ipfs_client import create_ipfs_client
-from a2a_anchor.verify import verify_trace
+from a2a_anchor.verify import TraceVerifier
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 xrpl = create_xrpl_client(
-    os.getenv('XRPL_NODE_URL'),
+    os.getenv('XRPL_NODE_URL', 'https://s.altnet.rippletest.net:51234'),
     seed=os.getenv('XRPL_SEED'),
     network='testnet'
 )
 ipfs = create_ipfs_client()
-result = verify_trace('<TX_HASH>', xrpl, ipfs)
-print(result)
+verifier = TraceVerifier(xrpl, ipfs)
+
+# 実際のトランザクション例
+tx_hash = '8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21'
+result = verifier.verify(tx_hash)
+
+print(f'Verified: {result.verified}')
+print(f'Session ID: {result.session_id}')
+print(f'IPFS CID: {result.cid}')
+print(f'Merkle Root Match: {result.expected_root == result.computed_root}')
+"
+```
+
+## 実際の検証例
+
+以下は、実際にXRPL Testnetに記録されたトレースの検証例です：
+
+### 検証可能なトランザクション
+
+**トランザクションハッシュ**: `8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21`
+
+- **XRPL Explorer**: https://testnet.xrpl.org/transactions/8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21
+- **Ledger Index**: 12180011
+- **Session ID**: session-c6258f2777c2
+- **IPFS CID**: QmSYKU3iV1u53RP2jCbQV9coDJRLJYoiNJTdLyDUTYGGHT
+- **Merkle Root**: e5d295ed807b7881eb2e2e977a04e9922c991f736dbe80a059846aa5e1aef673
+- **Model**: gpt-5-nano-2025-08-07
+- **Events**: 8個（AIエージェントとツールのやり取り）
+
+### このトランザクションを検証する
+
+```bash
+# 1. IPFSからトレースデータを取得
+curl http://127.0.0.1:8080/ipfs/QmSYKU3iV1u53RP2jCbQV9coDJRLJYoiNJTdLyDUTYGGHT | jq .
+
+# 2. Pythonで完全な検証を実行
+uv run python -c "
+from a2a_anchor.xrpl_client import create_xrpl_client
+from a2a_anchor.ipfs_client import create_ipfs_client
+from a2a_anchor.verify import TraceVerifier
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+xrpl = create_xrpl_client(
+    'https://s.altnet.rippletest.net:51234',
+    seed=os.getenv('XRPL_SEED'),
+    network='testnet'
+)
+ipfs = create_ipfs_client()
+verifier = TraceVerifier(xrpl, ipfs)
+
+result = verifier.verify('8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21')
+print(f'✓ Verified: {result.verified}')
+print(f'Session: {result.session_id}')
+print(f'Merkle Match: {result.expected_root == result.computed_root}')
 "
 ```
 
@@ -336,11 +415,14 @@ print(result)
 ### 問題
 - LLMエージェントの実行ログは改ざんされる可能性がある
 - 誰がどのツールを何回実行したか、証明できない
+- 監査やコンプライアンスのために実行履歴の証明が必要
 
-### 解決策
-1. **標準化**: A2A形式で誰でも読める形式に
+### 解決策（✅ 実装済み）
+1. **標準化**: A2A形式で誰でも読める形式に記録
 2. **ハッシュ化**: Merkle Rootで内容の完全性を保証
-3. **台帳記録**（未実装）: IPFS + XRPL でタイムスタンプと検証可能性
+3. **分散保存**: IPFSで永続的かつ分散的に保存
+4. **ブロックチェーン記録**: XRPL TestnetにCID+Merkle Rootを記録
+5. **完全な検証**: トランザクションハッシュから元のトレースまで検証可能
 
 ## テストの実行
 
