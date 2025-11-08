@@ -1,0 +1,77 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-beab398b4fd5",
+    "createdAt": "2025-11-03T14:25:53.487828+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-03T14:25:53.487842+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-03T14:25:53.487863+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights bloom at dusk\nCrowd holds its breath for the score\nWhistle seals the night"
+      },
+      "tool_call_id": "call_tFg0WwKSh9rgIddBCmodfeZd"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-03T14:25:53.487896+00:00",
+      "content": "Correct!!",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_tFg0WwKSh9rgIddBCmodfeZd"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-03T14:25:53.487910+00:00",
+      "content": "Court lights cut night thin\nPlayers trace the measured pace\nDust settles, cheers rise",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 171,
+      "output_tokens": 1709
+    },
+    {
+      "turn": 2,
+      "input_tokens": 226,
+      "output_tokens": 2268
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "cf3ec0603323d37b52797be748a441c46cb573456d59283a3db2d2b62340348b",
+    "chunks": [
+      "cf3ec0603323d37b52797be748a441c46cb573456d59283a3db2d2b62340348b"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

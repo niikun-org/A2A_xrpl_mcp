@@ -177,7 +177,7 @@ Process:
         print(f"  Session ID: {anchor_result['session_id']}")
         print(f"  IPFS CID: {anchor_result['cid']}")
         print(f"  IPFS URL: {anchor_result['ipfs_url']}")
-        print(f"  Gateway URL: http://localhost:8080/ipfs/{anchor_result['cid']}")
+        print(f"  Gateway URL: http://127.0.0.1:8080/ipfs/{anchor_result['cid']}")
         print(f"  XRPL TX Hash: {anchor_result['tx_hash']}")
         print(f"  Ledger Index: {anchor_result['ledger_index']}")
         print(f"  Merkle Root: {anchor_result['merkle_root']}")

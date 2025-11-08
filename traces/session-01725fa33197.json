@@ -1,0 +1,77 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-01725fa33197",
+    "createdAt": "2025-11-03T15:00:58.001610+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-03T15:00:58.001623+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-03T15:00:58.001640+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights hiss at dusk\nCleats carve wind, a steady drum\nThe crowd holds its breath"
+      },
+      "tool_call_id": "call_jc4KfTee5cSh1nXvnwAc8xgJ"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-03T15:00:58.001664+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_jc4KfTee5cSh1nXvnwAc8xgJ"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-03T15:00:58.001674+00:00",
+      "content": "Field lights hiss at dusk\nCleats carve wind, a steady drum\nThe crowd holds its breath",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 243,
+      "output_tokens": 1517
+    },
+    {
+      "turn": 2,
+      "input_tokens": 297,
+      "output_tokens": 349
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "e8adf2cd8c563c365ff26df215789f1ea424bf8033643490a738c87b7deab769",
+    "chunks": [
+      "e8adf2cd8c563c365ff26df215789f1ea424bf8033643490a738c87b7deab769"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

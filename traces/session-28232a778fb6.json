@@ -1,0 +1,118 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-28232a778fb6",
+    "createdAt": "2025-11-04T14:29:12.341014+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-04T14:29:12.341026+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-04T14:29:12.341041+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Cleats bite the chalked dirt\nWhistles cut the dawn's soft cold air\nHope runs with the team"
+      },
+      "tool_call_id": "call_CbIZPE2f064P47tiafOVcFKt"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-04T14:29:12.341065+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_CbIZPE2f064P47tiafOVcFKt"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-04T14:29:12.341074+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Locker room breath fogs\nThe field awaits with green bright nerve\nTeam chants rise like dawn"
+      },
+      "tool_call_id": "call_7zBZjRLRpoI0LPxJDy5m2WjO"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-04T14:29:12.341074+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Gym net snaps awake\nSweat beads map the rope's cold arc\nVictory hums low"
+      },
+      "tool_call_id": "call_CVrq9Frv65lAnO2JVzPqWHGd"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-04T14:29:12.341089+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_7zBZjRLRpoI0LPxJDy5m2WjO"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-04T14:29:12.341095+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_CVrq9Frv65lAnO2JVzPqWHGd"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-04T14:29:12.341100+00:00",
+      "content": "Gym net snaps awake\nSweat beads map the rope's cold arc\nVictory hums low",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 254,
+      "output_tokens": 1968
+    },
+    {
+      "turn": 2,
+      "input_tokens": 311,
+      "output_tokens": 1951
+    },
+    {
+      "turn": 3,
+      "input_tokens": 419,
+      "output_tokens": 796
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "d8ffcab75e662040a378e0fc4cbf46d3768a67d99a1c70609f8768ecdc5dab58",
+    "chunks": [
+      "d8ffcab75e662040a378e0fc4cbf46d3768a67d99a1c70609f8768ecdc5dab58"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

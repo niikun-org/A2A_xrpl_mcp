@@ -1,0 +1,77 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-67418b963471",
+    "createdAt": "2025-11-03T15:11:22.344754+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-03T15:11:22.344770+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-03T15:11:22.344787+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Stadium lights fade\ncleats carve chalk across the field\nfans rise, breath held fast"
+      },
+      "tool_call_id": "call_OeqQvU38uAQ9hApMJH8atYg0"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-03T15:11:22.344812+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_OeqQvU38uAQ9hApMJH8atYg0"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-03T15:11:22.344822+00:00",
+      "content": "Stadium lights fade\ncleats carve chalk across the field\nfans rise, breath held fast",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 243,
+      "output_tokens": 1324
+    },
+    {
+      "turn": 2,
+      "input_tokens": 296,
+      "output_tokens": 668
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "0fadfaca4cc26cfffd6d4ae4cd51b7485f88dd8710ac6d23e1791dff7c7ce191",
+    "chunks": [
+      "0fadfaca4cc26cfffd6d4ae4cd51b7485f88dd8710ac6d23e1791dff7c7ce191"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

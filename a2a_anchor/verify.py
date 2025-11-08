@@ -115,7 +115,9 @@ def verify_trace(
 
         # Step 3: Retrieve trace from IPFS
         try:
-            trace_data = ipfs_client.get_json(cid)
+            # Get JSON string directly to preserve formatting for Merkle Root verification
+            trace_json = ipfs_client.get_json_str(cid)
+            trace_data = json.loads(trace_json)
         except Exception as e:
             return VerificationResult(
                 verified=False,
@@ -127,7 +129,8 @@ def verify_trace(
             )
 
         # Step 4: Recalculate Merkle Root
-        trace_json = json.dumps(trace_data, ensure_ascii=False, indent=2)
+        # The trace JSON from IPFS is exactly what was used for merkle calculation
+        # (it was stored with get_merkle_json() which has empty hashing/signatures/redactions)
         computed_root, chunks = compute_trace_merkle(trace_json)
 
         # Step 5: Compare roots
@@ -178,11 +181,12 @@ def verify_trace_from_cid(
         VerificationResult object
     """
     try:
-        # Retrieve trace from IPFS
-        trace_data = ipfs_client.get_json(cid)
+        # Retrieve trace from IPFS (preserving formatting)
+        trace_json = ipfs_client.get_json_str(cid)
+        trace_data = json.loads(trace_json)
 
         # Recalculate Merkle Root
-        trace_json = json.dumps(trace_data, ensure_ascii=False, indent=2)
+        # The trace JSON from IPFS is exactly what was used for merkle calculation
         computed_root, chunks = compute_trace_merkle(trace_json)
 
         # Compare roots

@@ -175,7 +175,7 @@ Connected to IPFS node (version: 0.x.x)
 ✓ Trace uploaded to IPFS
   CID: bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi
   IPFS URL: ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi
-  Gateway URL: http://localhost:8080/ipfs/bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi
+  Gateway URL: http://127.0.0.1:8080/ipfs/bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi
 ✓ Content pinned to prevent garbage collection
 
 === Verifying IPFS retrieval ===
@@ -234,7 +234,7 @@ cat traces/session-*.json | jq .
 uv run python -c "from a2a_anchor.ipfs_client import create_ipfs_client; client = create_ipfs_client(); trace = client.get_json('<CID>'); print(f\"Session: {trace['session']['id']}\"); print(f\"Merkle Root: {trace['hashing']['chunkMerkleRoot']}\")"
 
 # または、IPFSゲートウェイ経由（ポート8080が公開されている場合）
-curl http://localhost:8080/ipfs/<CID> | jq .
+curl http://127.0.0.1:8080/ipfs/<CID> | jq .
 
 # 公開IPFSゲートウェイを使う場合
 curl https://ipfs.io/ipfs/<CID> | jq .

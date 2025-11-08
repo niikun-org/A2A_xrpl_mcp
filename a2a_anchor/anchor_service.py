@@ -60,8 +60,10 @@ class AnchorService:
             Exception: If IPFS upload or XRPL anchoring fails
         """
         # Step 1: Upload to IPFS
-        trace_dict = json.loads(trace.to_json())
-        cid = self.ipfs.add_json(trace_dict)
+        # Use the cached JSON that was used for Merkle Root calculation
+        # This ensures the Merkle Root can be verified correctly
+        trace_json_str = trace.get_merkle_json()
+        cid = self.ipfs.add_json_str(trace_json_str)
 
         # Pin the content
         self.ipfs.pin(cid)

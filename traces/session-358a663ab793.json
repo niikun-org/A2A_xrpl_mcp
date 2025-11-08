@@ -1,0 +1,118 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-358a663ab793",
+    "createdAt": "2025-11-04T14:22:34.208845+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-04T14:22:34.208861+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-04T14:22:34.208882+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Under stadium lights\nthe crowd breathes in perfect rhythm\ncleats kiss the chalk dust"
+      },
+      "tool_call_id": "call_fgCsZV9rAzAZW2BiVOpysPpn"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-04T14:22:34.208914+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_fgCsZV9rAzAZW2BiVOpysPpn"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-04T14:22:34.208926+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Whistles split the air\ncleats carve chalk on dusty grass\nhearts beat as one game"
+      },
+      "tool_call_id": "call_Boq5hyYzK2CVk1xzUuKFpidn"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-04T14:22:34.208926+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Net snaps in silence\nthe ball arcs through a pale dusk\nglory hums within"
+      },
+      "tool_call_id": "call_ayTRfzZY7rVie5PnvWIqzKRC"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-04T14:22:34.208948+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_Boq5hyYzK2CVk1xzUuKFpidn"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-04T14:22:34.208959+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_ayTRfzZY7rVie5PnvWIqzKRC"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-04T14:22:34.208969+00:00",
+      "content": "Net snaps in silence\nthe ball arcs through a pale dusk\nglory hums within",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 254,
+      "output_tokens": 619
+    },
+    {
+      "turn": 2,
+      "input_tokens": 307,
+      "output_tokens": 2784
+    },
+    {
+      "turn": 3,
+      "input_tokens": 417,
+      "output_tokens": 1179
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "91217b93faba1109fa4784f5fa5ffd3141024c051ff71c45acaaf6cd9d40754a",
+    "chunks": [
+      "91217b93faba1109fa4784f5fa5ffd3141024c051ff71c45acaaf6cd9d40754a"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

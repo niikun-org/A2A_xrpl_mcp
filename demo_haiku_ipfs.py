@@ -121,7 +121,7 @@ Process:
         print(f"✓ Trace uploaded to IPFS")
         print(f"  CID: {cid}")
         print(f"  IPFS URL: ipfs://{cid}")
-        print(f"  Gateway URL: http://localhost:8080/ipfs/{cid}")
+        print(f"  Gateway URL: http://127.0.0.1:8080/ipfs/{cid}")
 
         # Pin the content
         ipfs_client.pin(cid)
@@ -180,7 +180,7 @@ if __name__ == "__main__":
         print(f"Merkle Root: {trace.hashing.chunkMerkleRoot}")
         print(f"\nNext steps:")
         print(f"- Verify trace: uv run python -c \"from a2a_anchor.ipfs_client import create_ipfs_client; print(create_ipfs_client().get_json('{cid}')['session']['id'])\"")
-        print(f"- View in browser: http://localhost:8080/ipfs/{cid}")
+        print(f"- View in browser: http://127.0.0.1:8080/ipfs/{cid}")
     else:
         print(f"\nTrace saved locally to: {output_file}")
         print("IPFS upload skipped (node not available)")

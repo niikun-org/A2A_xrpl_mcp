@@ -68,6 +68,18 @@ class TraceJSON(BaseModel):
     signatures: List[Signature] = Field(default_factory=list)
     redactions: Redaction = Field(default_factory=Redaction)
 
+    # Cache for the JSON used in Merkle Root calculation
+    # This is NOT part of the A2A schema, just for internal use
+    model_config = {"extra": "allow"}
+    _merkle_json_cache: str = ""
+
     def to_json(self, **kwargs) -> str:
         """Export to JSON string"""
         return self.model_dump_json(indent=2, **kwargs)
+
+    def get_merkle_json(self) -> str:
+        """
+        Get the JSON string that was used for Merkle Root calculation.
+        This is the cached version without hashing/signatures/redactions fields populated.
+        """
+        return self._merkle_json_cache if self._merkle_json_cache else self.to_json()

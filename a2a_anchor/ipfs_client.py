@@ -53,11 +53,12 @@ class IPFSClient:
             raise ValueError("trace_json must be a dictionary")
 
         try:
-            # Convert to JSON string
+            # Convert to JSON string with consistent formatting
+            # This is important for Merkle Root verification
             json_str = json.dumps(trace_json, ensure_ascii=False, indent=2)
 
-            # Add to IPFS
-            result = self.client.add_json(trace_json)
+            # Add JSON string to IPFS as a file (not using add_json which doesn't preserve formatting)
+            result = self.client.add_str(json_str)
 
             return result
         except Exception as e:
@@ -66,6 +67,8 @@ class IPFSClient:
     def add_json_str(self, json_str: str) -> str:
         """
         Upload trace JSON string to IPFS and return CID.
+
+        This preserves the exact JSON formatting, which is important for Merkle Root verification.
 
         Args:
             json_str: Trace data as JSON string
@@ -79,10 +82,15 @@ class IPFSClient:
         """
         try:
             # Validate JSON
-            trace_dict = json.loads(json_str)
-            return self.add_json(trace_dict)
+            json.loads(json_str)
+
+            # Upload string directly to preserve formatting
+            result = self.client.add_str(json_str)
+            return result
         except json.JSONDecodeError as e:
             raise ValueError(f"Invalid JSON string: {e}")
+        except Exception as e:
+            raise Exception(f"Failed to add JSON string to IPFS: {e}")
 
     def get_json(self, cid: str) -> dict:
         """
@@ -102,10 +110,37 @@ class IPFSClient:
             raise ValueError("CID must be a non-empty string")
 
         try:
-            result = self.client.get_json(cid)
+            # Get content as string (to preserve formatting for Merkle Root verification)
+            json_str = self.client.cat(cid).decode('utf-8')
+            result = json.loads(json_str)
             return result
         except Exception as e:
             raise Exception(f"Failed to get JSON from IPFS (CID: {cid}): {e}")
+
+    def get_json_str(self, cid: str) -> str:
+        """
+        Retrieve JSON string from IPFS by CID.
+
+        This preserves the exact formatting, which is important for Merkle Root verification.
+
+        Args:
+            cid: Content Identifier
+
+        Returns:
+            Trace data as JSON string
+
+        Raises:
+            ValueError: If CID is invalid
+            Exception: If IPFS retrieval fails
+        """
+        if not cid or not isinstance(cid, str):
+            raise ValueError("CID must be a non-empty string")
+
+        try:
+            json_str = self.client.cat(cid).decode('utf-8')
+            return json_str
+        except Exception as e:
+            raise Exception(f"Failed to get JSON string from IPFS (CID: {cid}): {e}")
 
     def pin(self, cid: str) -> None:
         """

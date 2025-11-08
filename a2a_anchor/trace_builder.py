@@ -131,8 +131,14 @@ class TraceBuilder:
 
         # Compute Merkle root if requested
         if compute_merkle:
+            # Capture the JSON used for merkle calculation
             trace_json = trace.to_json()
             merkle_root, chunk_hashes = compute_trace_merkle(trace_json)
+
+            # Store the JSON used for merkle calculation
+            trace._merkle_json_cache = trace_json
+
+            # Update hashing field
             trace.hashing.chunkMerkleRoot = merkle_root
             trace.hashing.chunks = chunk_hashes
 

@@ -11,10 +11,8 @@ from datetime import datetime
 
 from xrpl.wallet import Wallet
 from xrpl.clients import JsonRpcClient
-from xrpl.models.transactions import Payment, Memo
-from xrpl.transaction import submit_and_wait, safe_sign_and_autofill_transaction
-from xrpl.models.response import Response
-from xrpl.utils import xrp_to_drops
+from xrpl.models.transactions import AccountSet, Memo
+from xrpl.transaction import submit_and_wait
 
 
 class XRPLClient:
@@ -118,17 +116,17 @@ class XRPLClient:
             memo_format="json".encode('utf-8').hex().upper()
         )
 
-        # Create payment transaction (to self)
-        payment = Payment(
+        # Create AccountSet transaction with memo
+        # AccountSet is a no-op transaction that can carry memos
+        # This is a standard way to record data on XRPL without transferring value
+        account_set = AccountSet(
             account=self.wallet.address,
-            destination=self.wallet.address,
-            amount="1",  # 1 drop (0.000001 XRP)
             memos=[memo]
         )
 
         try:
             # Sign and submit transaction
-            response = submit_and_wait(payment, self.client, self.wallet)
+            response = submit_and_wait(account_set, self.client, self.wallet)
 
             # Check if transaction was successful
             if response.result.get("meta", {}).get("TransactionResult") != "tesSUCCESS":
@@ -190,8 +188,10 @@ class XRPLClient:
         """
         tx_data = self.get_transaction(tx_hash)
 
-        # Get memos from transaction
+        # Get memos from transaction (check both root and tx_json)
         memos = tx_data.get("Memos", [])
+        if not memos and "tx_json" in tx_data:
+            memos = tx_data["tx_json"].get("Memos", [])
 
         if not memos:
             return None
@@ -273,8 +273,8 @@ class XRPLClient:
 
     def close(self) -> None:
         """Close the XRPL client connection."""
-        if hasattr(self, 'client') and self.client:
-            self.client.close()
+        # JsonRpcClient doesn't need explicit close in xrpl-py
+        pass
 
     def __enter__(self):
         """Context manager entry."""

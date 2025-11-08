@@ -1,0 +1,77 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-9c866ef25ab0",
+    "createdAt": "2025-11-03T15:03:33.373721+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-03T15:03:33.373736+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-03T15:03:33.373756+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights bloom at dusk\nlaces whisper of a pass\nsilence after roar"
+      },
+      "tool_call_id": "call_ACta7lwmy3lqT7dev7IGzXgL"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-03T15:03:33.373782+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_ACta7lwmy3lqT7dev7IGzXgL"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-03T15:03:33.373791+00:00",
+      "content": "Field lights bloom at dusk\nlaces whisper of a pass\nsilence after roar",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 243,
+      "output_tokens": 1129
+    },
+    {
+      "turn": 2,
+      "input_tokens": 293,
+      "output_tokens": 409
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "1c44952e415d7a6f8b99b323c6842c9b915c9fe31313a8ee93bcbc74cbf7c0b0",
+    "chunks": [
+      "1c44952e415d7a6f8b99b323c6842c9b915c9fe31313a8ee93bcbc74cbf7c0b0"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

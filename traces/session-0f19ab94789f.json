@@ -1,0 +1,77 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-0f19ab94789f",
+    "createdAt": "2025-11-03T15:06:48.984610+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-03T15:06:48.984621+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-03T15:06:48.984639+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Track echoes with dawn\nA ball arcs high as crowds rise\nHope drums in the chest"
+      },
+      "tool_call_id": "call_Fc6XaaxR6ooHpmLRnpe2bbSY"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-03T15:06:48.984664+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_Fc6XaaxR6ooHpmLRnpe2bbSY"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-03T15:06:48.984672+00:00",
+      "content": "Track echoes with dawn\nA ball arcs high as crowds rise\nHope drums in the chest",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 243,
+      "output_tokens": 1067
+    },
+    {
+      "turn": 2,
+      "input_tokens": 295,
+      "output_tokens": 347
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "dff1143487035a67bb458b1e79fbbe7a7d75db52ef28e0ef0dd88f9e6667904b",
+    "chunks": [
+      "dff1143487035a67bb458b1e79fbbe7a7d75db52ef28e0ef0dd88f9e6667904b"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

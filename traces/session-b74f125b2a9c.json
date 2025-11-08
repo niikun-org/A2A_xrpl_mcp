@@ -1,0 +1,77 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-b74f125b2a9c",
+    "createdAt": "2025-11-03T15:21:37.608025+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-03T15:21:37.608057+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-03T15:21:37.608080+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights blink awake\nWhistles cut the midnight air\nCrowd hums for the next score"
+      },
+      "tool_call_id": "call_dxivASppBYs3AjGaNZBQlOUN"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-03T15:21:37.608114+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_dxivASppBYs3AjGaNZBQlOUN"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-03T15:21:37.608127+00:00",
+      "content": "Field lights blink awake\nWhistles cut the midnight air\nCrowd hums for the next score",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 243,
+      "output_tokens": 493
+    },
+    {
+      "turn": 2,
+      "input_tokens": 297,
+      "output_tokens": 413
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "4086ca52f6b0ac10d4416aa7d74dfe0444c3fdbb5578212834dad6cdcdb77535",
+    "chunks": [
+      "4086ca52f6b0ac10d4416aa7d74dfe0444c3fdbb5578212834dad6cdcdb77535"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}
