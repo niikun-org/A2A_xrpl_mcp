@@ -3,9 +3,13 @@
 LLMエージェントの実行ログを **改ざん検証可能** な形で記録するシステムのデモ実装です。
 
 ## プレゼンテーション
-PDF版の資料は以下を参照してください。  
+- PDF版の資料は以下を参照してください。  
 
 https://acrobat.adobe.com/id/urn:aaid:sc:AP:4e814fac-8e81-4edc-8ed0-e90caa58188b
+
+- サービスイメージは以下を参照してください。
+
+https://niikun.net/A2A_demo.html
 
 ## 何ができるか
 
