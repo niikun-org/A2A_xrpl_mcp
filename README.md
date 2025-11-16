@@ -1,169 +1,162 @@
 # A2A Trace Anchoring on XRPL
 
+**An open-source system for tamper-proof recording and verification of AI agent actions**
+
 **AIエージェントの全行動を、改ざん不可能な形で記録・検証できるオープンソースシステム**
 
-**Tamper-proof recording and verification for every AI agent action**
+[日本語版はこちら](README_JA.md) | [English](README_EN.md)
 
----
+## Presentation
 
-**Language / 言語選択**
-
-- [🇯🇵 日本語版 (Japanese)](README_JA.md)
-- [🇬🇧 English](README_EN.md)
-
----
-
-## プレゼンテーション
-- PDF版の資料は以下を参照してください。  
+- View the PDF presentation here:
 
 https://acrobat.adobe.com/id/urn:aaid:sc:AP:39dc90b8-05b8-4001-923f-ee15bc38b82e
 
-- サービスイメージは以下を参照してください。
+- Try the interactive demo:
 
 https://niikun.net/A2A_demo.html
 
+## What It Does
 
-## 何ができるか
+This project records execution traces of LangChain agents (haiku_agent) with:
 
-このプロジェクトは、LangChainエージェント（haiku_agent）の実行トレースを：
+1. **Standardization**: Recording in A2A format (a2a-0.1) JSON
+2. **Integrity Guarantee**: Hash verification via Merkle Root
+3. **Distributed Storage**: Storage on IPFS (InterPlanetary File System)
+4. **Blockchain Recording**: Recording on XRPL ledger for tamper verification
 
-1. **標準化**: A2A形式（a2a-0.1）のJSON形式で記録
-2. **完全性保証**: Merkle Rootによるハッシュ検証
-3. **分散保存**: IPFS（分散ファイルシステム）に保存
-4. **ブロックチェーン記録**: XRPL台帳に記録して改ざん検証可能
+## Current Implementation Status
 
-## 現在の実装状況
+### ✅ Phase 1 Complete
+- Convert LangChain agent execution logs to A2A format
+- Integrity verification via Merkle Root calculation
+- Local JSON file storage
 
-### ✅ Phase 1 完了
-- LangChainエージェントの実行ログをA2A形式に変換
-- Merkle Root計算による完全性検証
-- JSONファイルとしてローカル保存
+### ✅ Phase 2 Complete
+- IPFS integration (save traces to IPFS, get CID)
+- IPFS verification (retrieve trace by CID, verify Merkle Root)
 
-### ✅ Phase 2 完了
-- IPFS統合（トレースをIPFSに保存、CID取得）
-- IPFS検証機能（CIDからトレース取得、Merkle Root検証）
+### ✅ Phase 3 Complete (Full Implementation!)
+- XRPL integration (anchoring to Testnet, Memo recording)
+- Complete verification flow (XRPL → IPFS → Merkle Root verification)
+- Integrated service (AnchorService) for batch processing
+- End-to-end verification system
 
-### ✅ Phase 3 完了（全機能実装完了！）
-- XRPL統合（Testnetへのアンカリング、Memo記録）
-- 完全な検証フロー（XRPL → IPFS → Merkle Root検証）
-- 統合サービス（AnchorService）による一括処理
-- エンドツーエンドの検証システム
+## How to Run Demos
 
-## デモの実行方法
+### 🌐 Interactive Web Demo (Most User-Friendly!)
 
-### 🌐 インタラクティブWebデモ（最もわかりやすい！）
+Open the following HTML files in your browser:
 
-ブラウザで以下のHTMLファイルを開いてください：
-
-#### 1. システム全体の動きを見る
+#### 1. See the System in Action
 ```bash
 open demo_interactive.html
 ```
-**[demo_interactive.html](demo_interactive.html)** - アニメーション付きの解説デモ
-- 🎬 6ステップのアニメーション
-- ▶️ 自動再生機能
-- ⌨️ キーボード操作（矢印キー、スペースキー）
-- 📊 リアルタイムの進捗バー
+**[demo_interactive.html](demo_interactive.html)** - Animated explanation demo
+- 🎬 6-step animation
+- ▶️ Auto-play feature
+- ⌨️ Keyboard controls (arrow keys, space bar)
+- 📊 Real-time progress bar
 
-#### 2. 実際のトレースファイルを見る
+#### 2. View Actual Trace Files
 ```bash
 open trace_viewer.html
 ```
-**[trace_viewer.html](trace_viewer.html)** - トレースファイルの可視化ツール
-- 📁 ドラッグ&ドロップでJSONファイルを読み込み
-- 📊 統計情報の表示
-- ⏱️ イベントタイムライン
-- 🔐 Merkle Root検証情報
+**[trace_viewer.html](trace_viewer.html)** - Trace file visualization tool
+- 📁 Drag & drop JSON files
+- 📊 Display statistics
+- ⏱️ Event timeline
+- 🔐 Merkle Root verification info
 
 ---
 
-### 🎓 ターミナルでの対話型デモ
+### 🎓 Interactive Terminal Demo
 
 ```bash
 uv run demo_simple_explanation.py
 ```
 
-**このデモは、A2Aトレースアンカリングの仕組みを対話的に説明します。**
-- ✨ ステップバイステップで仕組みを理解
-- 📊 ビジュアルな図解
-- 💡 実際の使用例
-- 🔍 各フェーズの詳細説明
+**This demo interactively explains the A2A trace anchoring mechanism:**
+- ✨ Step-by-step understanding
+- 📊 Visual diagrams
+- 💡 Real-world use cases
+- 🔍 Detailed phase explanations
 
-📖 **詳細な図解ドキュメント**: [EXPLANATION.md](./EXPLANATION.md)
+📖 **Detailed illustrated documentation**: [EXPLANATION.md](./EXPLANATION.md)
 
 ---
 
-### Phase 1: ローカル保存のみ
+### Phase 1: Local Storage Only
 
 ```bash
 uv run demo_haiku_trace.py
 ```
 
-### Phase 2: IPFS統合デモ
+### Phase 2: IPFS Integration Demo
 
-#### 1. IPFSノードを起動
+#### 1. Start IPFS Node
 
 ```bash
-# 新規起動
+# Fresh start
 docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
 ```
 
-**注意:** すでにIPFSコンテナが存在する場合のトラブルシューティング：
+**Note:** Troubleshooting if IPFS container already exists:
 
 ```bash
-# コンテナの状態を確認
+# Check container status
 docker ps -a | grep ipfs
 
-# 停止している場合は再起動
+# Restart if stopped
 docker start ipfs
 
-# エラーが出る場合は削除して再作成
+# If errors occur, remove and recreate
 docker rm -f ipfs
 docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
 ```
 
-#### 2. デモを実行
+#### 2. Run Demo
 
 ```bash
 uv run demo_haiku_ipfs.py
 ```
 
-### Phase 3: 完全なアンカリング（IPFS + XRPL）
+### Phase 3: Full Anchoring (IPFS + XRPL)
 
-#### 1. IPFSノードを起動
+#### 1. Start IPFS Node
 
 ```bash
-# コンテナの状態を確認
+# Check container status
 docker ps -a | grep ipfs
 
-# 停止している場合は再起動
+# Restart if stopped
 docker start ipfs
 
-# 存在しない場合は新規作成
+# Create new if doesn't exist
 docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
 ```
 
-**注意:** Phase 2で既にIPFSを起動している場合、そのまま使えます。
+**Note:** If you already started IPFS in Phase 2, you can use the same instance.
 
-#### 2. XRPL Testnetアカウントを取得
+#### 2. Get XRPL Testnet Account
 
-1. [XRPL Testnet Faucet](https://xrpl.org/xrp-testnet-faucet.html)にアクセス
-2. "Generate"をクリックしてTestnetアカウントを作成
-3. 表示された`Secret`（seed）を`.env`ファイルに追加：
+1. Visit [XRPL Testnet Faucet](https://xrpl.org/xrp-testnet-faucet.html)
+2. Click "Generate" to create a Testnet account
+3. Add the displayed `Secret` (seed) to your `.env` file:
 
 ```bash
 XRPL_SEED=sXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-#### 3. デモを実行
+#### 3. Run Demo
 
 ```bash
 uv run demo_full_anchor.py
 ```
 
-### 3. 実行結果
+### Expected Output
 
-#### Phase 1（ローカル保存のみ）
+#### Phase 1 (Local Storage Only)
 
 ```
 === Running haiku_agent ===
@@ -187,9 +180,9 @@ Chunks: 2
 === Trace saved to: traces/session-XXXXX.json ===
 ```
 
-#### Phase 2（IPFS統合）
+#### Phase 2 (IPFS Integration)
 
-Phase 1の出力に加えて：
+In addition to Phase 1 output:
 
 ```
 === Phase 2: Uploading to IPFS ===
@@ -210,9 +203,9 @@ Local file: traces/session-XXXXX.json
 IPFS CID: bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi
 ```
 
-#### Phase 3（完全なアンカリング）
+#### Phase 3 (Full Anchoring)
 
-Phase 1, 2の出力に加えて：
+In addition to Phase 1 and 2 output:
 
 ```
 === Step 5: Anchoring to IPFS + XRPL ===
@@ -261,36 +254,36 @@ Explore on XRPL:
   https://testnet.xrpl.org/transactions/8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21
 ```
 
-### 4. トレースの検証
+## Verifying Traces
 
-#### ローカルファイルを確認
+#### Check Local File
 
 ```bash
 cat traces/session-*.json | jq .
 ```
 
-#### IPFSから取得して検証
+#### Retrieve and Verify from IPFS
 
 ```bash
-# Pythonで検証（推奨）
+# Verify with Python (recommended)
 uv run python -c "from a2a_anchor.ipfs_client import create_ipfs_client; client = create_ipfs_client(); trace = client.get_json('<CID>'); print(f\"Session: {trace['session']['id']}\"); print(f\"Merkle Root: {trace['hashing']['chunkMerkleRoot']}\")"
 
-# または、IPFSゲートウェイ経由（ポート8080が公開されている場合）
+# Or via IPFS gateway (if port 8080 is exposed)
 curl http://127.0.0.1:8080/ipfs/<CID> | jq .
 
-# 公開IPFSゲートウェイを使う場合
+# Using public IPFS gateway
 curl https://ipfs.io/ipfs/<CID> | jq .
 ```
 
-**注意:** GitHub Codespacesを使用している場合：
-1. VSCodeの「ポート」タブを開く
-2. ポート8080を見つけて「公開範囲」を「Public」に変更
-3. または、Pythonから直接IPFSにアクセス（上記のコマンド）
+**Note:** When using GitHub Codespaces:
+1. Open the "Ports" tab in VSCode
+2. Find port 8080 and change "Visibility" to "Public"
+3. Or access IPFS directly from Python (command above)
 
-#### XRPLトランザクションから完全検証
+#### Full Verification from XRPL Transaction
 
 ```bash
-# トランザクションハッシュから検証（実際の例）
+# Verify from transaction hash (actual example)
 uv run python -c "
 from a2a_anchor.xrpl_client import create_xrpl_client
 from a2a_anchor.ipfs_client import create_ipfs_client
@@ -308,7 +301,7 @@ xrpl = create_xrpl_client(
 ipfs = create_ipfs_client()
 verifier = TraceVerifier(xrpl, ipfs)
 
-# 実際のトランザクション例
+# Actual transaction example
 tx_hash = '8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21'
 result = verifier.verify(tx_hash)
 
@@ -319,13 +312,13 @@ print(f'Merkle Root Match: {result.expected_root == result.computed_root}')
 "
 ```
 
-## 実際の検証例
+## Real Verification Example
 
-以下は、実際にXRPL Testnetに記録されたトレースの検証例です：
+Here's an actual trace recorded on XRPL Testnet:
 
-### 検証可能なトランザクション
+### Verifiable Transaction
 
-**トランザクションハッシュ**: `8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21`
+**Transaction Hash**: `8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21`
 
 - **XRPL Explorer**: https://testnet.xrpl.org/transactions/8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21
 - **Ledger Index**: 12180011
@@ -333,15 +326,15 @@ print(f'Merkle Root Match: {result.expected_root == result.computed_root}')
 - **IPFS CID**: QmSYKU3iV1u53RP2jCbQV9coDJRLJYoiNJTdLyDUTYGGHT
 - **Merkle Root**: e5d295ed807b7881eb2e2e977a04e9922c991f736dbe80a059846aa5e1aef673
 - **Model**: gpt-5-nano-2025-08-07
-- **Events**: 8個（AIエージェントとツールのやり取り）
+- **Events**: 8 (AI agent and tool interactions)
 
-### このトランザクションを検証する
+### Verify This Transaction
 
 ```bash
-# 1. IPFSからトレースデータを取得
+# 1. Retrieve trace data from IPFS
 curl http://127.0.0.1:8080/ipfs/QmSYKU3iV1u53RP2jCbQV9coDJRLJYoiNJTdLyDUTYGGHT | jq .
 
-# 2. Pythonで完全な検証を実行
+# 2. Run complete verification in Python
 uv run python -c "
 from a2a_anchor.xrpl_client import create_xrpl_client
 from a2a_anchor.ipfs_client import create_ipfs_client
@@ -366,9 +359,9 @@ print(f'Merkle Match: {result.expected_root == result.computed_root}')
 "
 ```
 
-## トレースファイルの内容
+## Trace File Contents
 
-生成されるJSONには以下が含まれます：
+Generated JSON includes:
 
 ```json
 {
@@ -398,139 +391,139 @@ print(f'Merkle Match: {result.expected_root == result.computed_root}')
 }
 ```
 
-## プロジェクト構成
+## Project Structure
 
 ```
 .
-├── a2a_anchor/              # A2Aアンカリングライブラリ
+├── a2a_anchor/              # A2A anchoring library
 │   ├── __init__.py
-│   ├── trace_schema.py      # A2A JSONスキーマ定義（Pydantic）
-│   ├── trace_builder.py     # LangChain結果→A2A変換
-│   ├── merkle.py            # Merkle Root計算
-│   ├── ipfs_client.py       # IPFS統合（Phase 2）
-│   ├── xrpl_client.py       # XRPL統合（Phase 3）
-│   ├── anchor_service.py    # 統合アンカリングサービス（Phase 3）
-│   └── verify.py            # 検証モジュール（Phase 3）
-├── tests/                   # テストコード
-│   ├── test_ipfs.py         # IPFSクライアントのテスト
-│   └── test_xrpl.py         # XRPLクライアントのテスト
-├── demo_haiku_trace.py      # デモ：Phase 1（ローカル保存）
-├── demo_haiku_ipfs.py       # デモ：Phase 2（IPFS統合）
-├── demo_full_anchor.py      # デモ：Phase 3（完全なアンカリング）
-├── haiku_agent.py           # Haikuを生成するLangChainエージェント
-├── traces/                  # 生成されたトレースファイル
-└── a2a_xrpl_spec.md        # 仕様書
+│   ├── trace_schema.py      # A2A JSON schema (Pydantic)
+│   ├── trace_builder.py     # LangChain result → A2A conversion
+│   ├── merkle.py            # Merkle Root calculation
+│   ├── ipfs_client.py       # IPFS integration (Phase 2)
+│   ├── xrpl_client.py       # XRPL integration (Phase 3)
+│   ├── anchor_service.py    # Integrated anchoring service (Phase 3)
+│   └── verify.py            # Verification module (Phase 3)
+├── tests/                   # Test code
+│   ├── test_ipfs.py         # IPFS client tests
+│   └── test_xrpl.py         # XRPL client tests
+├── demo_haiku_trace.py      # Demo: Phase 1 (local storage)
+├── demo_haiku_ipfs.py       # Demo: Phase 2 (IPFS integration)
+├── demo_full_anchor.py      # Demo: Phase 3 (full anchoring)
+├── haiku_agent.py           # LangChain agent that generates Haiku
+├── traces/                  # Generated trace files
+└── a2a_xrpl_spec.md        # Specification
 ```
 
-## 記録される情報
+## Recorded Information
 
-- **ユーザーメッセージ**: エージェントへの入力
-- **AIメッセージ**: エージェントの応答
-- **ツール呼び出し**: check_haiku_lines等のツール実行
-- **ツール結果**: ツールの実行結果
-- **メタデータ**: モデル名、トークン使用量、タイムスタンプ
-- **完全性検証**: Merkle Root（改ざん検知用）
+- **User Messages**: Input to agent
+- **AI Messages**: Agent responses
+- **Tool Calls**: Tool executions like check_haiku_lines
+- **Tool Results**: Tool execution results
+- **Metadata**: Model name, token usage, timestamps
+- **Integrity Verification**: Merkle Root (for tamper detection)
 
-## なぜこれが必要か
+## Why This Is Needed
 
-### 問題
-- LLMエージェントの実行ログは改ざんされる可能性がある
-- 誰がどのツールを何回実行したか、証明できない
-- 監査やコンプライアンスのために実行履歴の証明が必要
+### Problem
+- LLM agent execution logs can be tampered with
+- No way to prove who executed which tools and how many times
+- Need to prove execution history for audits and compliance
 
-### 解決策（✅ 実装済み）
-1. **標準化**: A2A形式で誰でも読める形式に記録
-2. **ハッシュ化**: Merkle Rootで内容の完全性を保証
-3. **分散保存**: IPFSで永続的かつ分散的に保存
-4. **ブロックチェーン記録**: XRPL TestnetにCID+Merkle Rootを記録
-5. **完全な検証**: トランザクションハッシュから元のトレースまで検証可能
+### Solution (✅ Implemented)
+1. **Standardization**: Record in human-readable A2A format
+2. **Hashing**: Guarantee content integrity with Merkle Root
+3. **Distributed Storage**: Permanent and distributed storage on IPFS
+4. **Blockchain Recording**: Record CID + Merkle Root on XRPL Testnet
+5. **Complete Verification**: Verifiable from transaction hash to original trace
 
-## テストの実行
+## Running Tests
 
-### IPFSテスト
+### IPFS Tests
 
 ```bash
-# IPFSノードを起動
+# Start IPFS node
 docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
 
-# テストを実行
+# Run tests
 uv run pytest tests/test_ipfs.py -v
 
-# IPFSがない場合はスキップ
+# Skip if IPFS unavailable
 uv run pytest -k "not ipfs"
 ```
 
-### XRPLテスト
+### XRPL Tests
 
 ```bash
-# .envファイルにXRPL_SEEDを設定
+# Set XRPL_SEED in .env file
 
-# テストを実行
+# Run tests
 uv run pytest tests/test_xrpl.py -v
 
-# XRPLがない場合はスキップ
+# Skip if XRPL unavailable
 uv run pytest -k "not xrpl"
 ```
 
-### 統合テスト
+### Integration Tests
 
 ```bash
-# IPFS + XRPL両方必要
+# Requires both IPFS + XRPL
 uv run pytest tests/test_xrpl.py::test_full_integration_anchor_and_verify -v
 ```
 
-## 実装された機能
+## Implemented Features
 
-### Phase 1: ローカルトレース記録
-- ✅ LangChainエージェント実行ログの取得
-- ✅ A2A形式（a2a-0.1）への変換
-- ✅ Merkle Root計算
-- ✅ JSONファイル保存
+### Phase 1: Local Trace Recording
+- ✅ Capture LangChain agent execution logs
+- ✅ Convert to A2A format (a2a-0.1)
+- ✅ Calculate Merkle Root
+- ✅ Save JSON file
 
-### Phase 2: IPFS統合
-- ✅ IPFSクライアント実装
-- ✅ トレースのIPFSアップロード
-- ✅ CID取得とピン機能
-- ✅ IPFSからの取得と検証
+### Phase 2: IPFS Integration
+- ✅ IPFS client implementation
+- ✅ Upload traces to IPFS
+- ✅ CID retrieval and pinning
+- ✅ Retrieve from IPFS and verify
 
-### Phase 3: XRPL統合
-- ✅ XRPLクライアント実装
-- ✅ XRPL Testnetへのトランザクション送信
-- ✅ MemoフィールドへのCID + Merkle Root記録
-- ✅ 統合アンカリングサービス（AnchorService）
-- ✅ 完全な検証フロー（verify.py）
-- ✅ エンドツーエンドテスト
+### Phase 3: XRPL Integration
+- ✅ XRPL client implementation
+- ✅ Send transactions to XRPL Testnet
+- ✅ Record CID + Merkle Root in Memo field
+- ✅ Integrated anchoring service (AnchorService)
+- ✅ Complete verification flow (verify.py)
+- ✅ End-to-end testing
 
-## アーキテクチャ
+## Architecture
 
 ```
-1. LangChainエージェント実行
+1. LangChain agent execution
    ↓
 2. TraceBuilder: messages → A2A JSON
    ↓
-3. Merkle計算: JSON → チャンク化 → Merkle Root
+3. Merkle calculation: JSON → chunking → Merkle Root
    ↓
-4. IPFS保存: JSON → CID取得 → Pin
+4. IPFS storage: JSON → get CID → Pin
    ↓
-5. XRPL記録: Payment TX + Memo {cid, root, meta}
+5. XRPL recording: Payment TX + Memo {cid, root, meta}
    ↓
-6. 検証: TX Hash → Memo → CID → IPFS → JSON → Merkle Root再計算 → 比較
+6. Verification: TX Hash → Memo → CID → IPFS → JSON → recalculate Merkle Root → compare
 ```
 
-## 将来の拡張
+## Future Extensions
 
-以下の機能は仕様書に含まれていますが、現在のMVPでは未実装です：
+The following features are in the spec but not yet implemented in this MVP:
 
-- XRPL EVM サイドチェーンでのEAS互換化
-- ZK証明による内容非公開検証
-- Next.jsビューアでの時系列表示
-- 署名機能（EIP-191-like）
-- Redaction（PII masking）機能
-- CLIツール（`a2a` コマンド）
+- XRPL EVM sidechain with EAS compatibility
+- ZK proofs for content-private verification
+- Next.js viewer with timeline display
+- Signature functionality (EIP-191-like)
+- Redaction (PII masking) features
+- CLI tool (`a2a` command)
 
-## 参考
+## References
 
-- 詳細仕様: [a2a_xrpl_spec.md](./a2a_xrpl_spec.md)
+- Detailed specification: [a2a_xrpl_spec.md](./a2a_xrpl_spec.md)
 - XRPL: https://xrpl.org/
 - IPFS: https://ipfs.tech/
 
@@ -539,4 +532,3 @@ uv run pytest tests/test_xrpl.py::test_full_integration_anchor_and_verify -v
 Copyright 2025 niikun
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
-
