@@ -4,14 +4,7 @@
 
 **Tamper-proof recording and verification for every AI agent action**
 
----
-
-**Language / 言語選択**
-
-- [🇯🇵 日本語版 (Japanese)](README_JA.md)
-- [🇬🇧 English](README_EN.md)
-
----
+📖 **[English Version / 英語版はこちら](README.md)**
 
 ## プレゼンテーション
 - PDF版の資料は以下を参照してください。  

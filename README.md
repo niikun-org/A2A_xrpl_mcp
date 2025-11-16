@@ -4,7 +4,7 @@
 
 **AIエージェントの全行動を、改ざん不可能な形で記録・検証できるオープンソースシステム**
 
-[日本語版はこちら](README_JA.md) | [English](README_EN.md)
+📖 **[日本語版はこちら / Japanese Version](README_JA.md)**
 
 ## Presentation
 
