@@ -1,0 +1,123 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-d7bcf8ba1e94",
+    "createdAt": "2025-11-16T11:31:55.955767+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-16T11:31:55.955781+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-16T11:31:55.955803+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights bloom at dusk\nthe ball arcs toward the brave keeper\ncheers knit the night to sound"
+      },
+      "tool_call_id": "call_M64UHHdfq0kqwILMw1p3OQx6"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-16T11:31:55.955837+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_M64UHHdfq0kqwILMw1p3OQx6"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-16T11:31:55.955848+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Stadium breathes in dusk\ncleats carve lines through turf and glow\nwind stitches the cheers"
+      },
+      "tool_call_id": "call_8BE6KJUX7qwvxPhjhutmxbRV"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-16T11:31:55.955865+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_8BE6KJUX7qwvxPhjhutmxbRV"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-16T11:31:55.955875+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights bloom at dusk\nthe ball arcs toward the brave keeper\ncheers knit the night to sound"
+      },
+      "tool_call_id": "call_hw5zCZpYhEsfi2mAW3MIIivV"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-16T11:31:55.955889+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_hw5zCZpYhEsfi2mAW3MIIivV"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-16T11:31:55.955897+00:00",
+      "content": "Stadium breathes in dusk\ncleats carve lines through turf and glow\nwind stitches the cheers",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 254,
+      "output_tokens": 1326
+    },
+    {
+      "turn": 2,
+      "input_tokens": 310,
+      "output_tokens": 1261
+    },
+    {
+      "turn": 3,
+      "input_tokens": 364,
+      "output_tokens": 41
+    },
+    {
+      "turn": 4,
+      "input_tokens": 420,
+      "output_tokens": 605
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "bc40bfd5d4c1e32e86ec6073117890e0778f41dd1ccba7090bbfb0a31928c5ed",
+    "chunks": [
+      "bc40bfd5d4c1e32e86ec6073117890e0778f41dd1ccba7090bbfb0a31928c5ed"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

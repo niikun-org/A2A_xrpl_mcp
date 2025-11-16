@@ -1,0 +1,118 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-61c2c716d7a4",
+    "createdAt": "2025-11-16T11:27:42.081932+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-16T11:27:42.081949+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-16T11:27:42.081971+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Cleats kiss dusty chalk\nCrowd holds breath as the ball climbs\nGlow of victory"
+      },
+      "tool_call_id": "call_SkJBcUHhr9tyl0w1DAiuPDTF"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-16T11:27:42.082008+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_SkJBcUHhr9tyl0w1DAiuPDTF"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-16T11:27:42.082021+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Cleats bite summer air\nWhistles carve the field in two\nBall arcs toward the night"
+      },
+      "tool_call_id": "call_lj0wJiORAWVAqGe8joBTsTm4"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-16T11:27:42.082021+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Locker-room hush lingers\nStadium lights etch chalk on green\nHope drums in the crowd"
+      },
+      "tool_call_id": "call_CGx1JGqqOURpP8j5IlsXKBnM"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-16T11:27:42.082046+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_lj0wJiORAWVAqGe8joBTsTm4"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-16T11:27:42.082061+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_CGx1JGqqOURpP8j5IlsXKBnM"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-16T11:27:42.082071+00:00",
+      "content": "Locker-room hush lingers\nStadium lights etch chalk on green\nHope drums in the crowd",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 254,
+      "output_tokens": 2347
+    },
+    {
+      "turn": 2,
+      "input_tokens": 306,
+      "output_tokens": 2208
+    },
+    {
+      "turn": 3,
+      "input_tokens": 415,
+      "output_tokens": 797
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "661d3f074b8dfac7e49ac42b9945d61e3d7930b3e8f5d62f53de40aeaa8aced5",
+    "chunks": [
+      "661d3f074b8dfac7e49ac42b9945d61e3d7930b3e8f5d62f53de40aeaa8aced5"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}
