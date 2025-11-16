@@ -5,11 +5,12 @@ LLMエージェントの実行ログを **改ざん検証可能** な形で記�
 ## プレゼンテーション
 - PDF版の資料は以下を参照してください。  
 
-https://acrobat.adobe.com/id/urn:aaid:sc:AP:4e814fac-8e81-4edc-8ed0-e90caa58188b
+https://acrobat.adobe.com/id/urn:aaid:sc:AP:39dc90b8-05b8-4001-923f-ee15bc38b82e
 
 - サービスイメージは以下を参照してください。
 
 https://niikun.net/A2A_demo.html
+
 
 ## 何ができるか
 
