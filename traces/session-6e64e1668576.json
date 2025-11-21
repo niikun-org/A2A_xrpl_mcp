@@ -1,0 +1,118 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-6e64e1668576",
+    "createdAt": "2025-11-20T23:35:02.944131+00:00",
+    "actors": [
+      "assistant",
+      "tool:check_haiku_lines",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "gpt-5-nano-2025-08-07",
+    "provider": "openai"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-20T23:35:02.944146+00:00",
+      "content": "please write a poem.",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-20T23:35:02.944167+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field lights breathe at dusk\ncleats carve echoes on the track\ncrowd's pulse writes the score"
+      },
+      "tool_call_id": "call_Ewug2ya2iMXqOnG2trdm5jUP"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-20T23:35:02.944200+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_Ewug2ya2iMXqOnG2trdm5jUP"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-20T23:35:02.944212+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Field frost thinning away\ncleats kiss the muddy arc\ncrowd breathes in, one cheer"
+      },
+      "tool_call_id": "call_s0mlcwajkVUgBK1NuBKjiUPw"
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-20T23:35:02.944212+00:00",
+      "content": null,
+      "tool": "check_haiku_lines",
+      "args": {
+        "text": "Sunlit diamond gleams\ngloves spark thrice in a swift catch\nsilence holds the outstretched win"
+      },
+      "tool_call_id": "call_GKiXNb7pMSOUnY699HHFN9bl"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-20T23:35:02.944234+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_s0mlcwajkVUgBK1NuBKjiUPw"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-20T23:35:02.944245+00:00",
+      "content": "OK",
+      "tool": "check_haiku_lines",
+      "args": null,
+      "tool_call_id": "call_GKiXNb7pMSOUnY699HHFN9bl"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-20T23:35:02.944253+00:00",
+      "content": "Sunlit diamond gleams\ngloves spark thrice in a swift catch\nsilence holds the outstretched win",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [
+    {
+      "turn": 1,
+      "input_tokens": 254,
+      "output_tokens": 942
+    },
+    {
+      "turn": 2,
+      "input_tokens": 309,
+      "output_tokens": 1509
+    },
+    {
+      "turn": 3,
+      "input_tokens": 424,
+      "output_tokens": 865
+    }
+  ],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "578657b810c7969bfdf8b0d4298dcdd8d48901455fe6c01cc09176c0037a098c",
+    "chunks": [
+      "578657b810c7969bfdf8b0d4298dcdd8d48901455fe6c01cc09176c0037a098c"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}
