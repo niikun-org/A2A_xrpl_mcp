@@ -514,11 +514,15 @@ uv run pytest tests/test_xrpl.py::test_full_integration_anchor_and_verify -v
 
 The following features are in the spec but not yet implemented in this MVP:
 
+- **Signature functionality (EIP-191-like)**: Digital signatures to prove trace authenticity and authorship
+  - Currently: `"signatures": []` (empty array in JSON)
+  - Planned: Cryptographic signatures from actors to verify who created the trace
+- **Redaction (PII masking) features**: Privacy protection for sensitive information
+  - Currently: `"redactions": {"policy": "pii_mask", "masked_fields": []}` (default values only)
+  - Planned: Automatic PII detection and masking, GDPR compliance
 - XRPL EVM sidechain with EAS compatibility
 - ZK proofs for content-private verification
 - Next.js viewer with timeline display
-- Signature functionality (EIP-191-like)
-- Redaction (PII masking) features
 - CLI tool (`a2a` command)
 
 ## References

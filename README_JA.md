@@ -514,11 +514,15 @@ uv run pytest tests/test_xrpl.py::test_full_integration_anchor_and_verify -v
 
 以下の機能は仕様書に含まれていますが、現在のMVPでは未実装です：
 
+- **署名機能（EIP-191-like）**: トレースの真正性と作成者を証明するデジタル署名
+  - 現状: `"signatures": []` （JSONに空配列として出力）
+  - 計画: アクター（ユーザー、AI等）による暗号署名でトレース作成者を検証
+- **Redaction（PII masking）機能**: 機密情報の保護
+  - 現状: `"redactions": {"policy": "pii_mask", "masked_fields": []}` （デフォルト値のみ）
+  - 計画: 個人情報の自動検出とマスキング、GDPR対応
 - XRPL EVM サイドチェーンでのEAS互換化
 - ZK証明による内容非公開検証
 - Next.jsビューアでの時系列表示
-- 署名機能（EIP-191-like）
-- Redaction（PII masking）機能
 - CLIツール（`a2a` コマンド）
 
 ## 参考
