@@ -9,6 +9,41 @@
 
 ---
 
+## 🏆 HuggingFace Hackathon Submission
+
+<!--
+IMPORTANT: Before submitting to the hackathon, complete these steps:
+
+1. ✅ Join the hackathon organization (click "Request to join this org")
+2. ✅ Submit this Space to the organization
+3. ✅ Add track tags below
+4. ✅ Add social media post link
+5. ✅ Verify submission before deadline: November 30, 2025, 11:59 PM UTC
+-->
+
+**Hackathon:** MCP 1st Birthday Hackathon (November 2025)
+
+**Tracks Entered:**
+- `#building-with-mcp` - Custom MCP server with 5 tools + hybrid logging system
+- `#mcp-in-action` - Real-world application: Blockchain-anchored AI audit trails
+
+**Tag:** `building-mcp-track-enterprise`
+
+**Demo Video:** https://www.youtube.com/watch?v=skF58ABgoE8
+
+**Social Media Posts:**
+- LinkedIn: https://www.linkedin.com/posts/kawata-akimoto-711320228_mcp-aitransparency-a2a-activity-7398355559814610944-hGvC
+- X (Twitter): https://x.com/niiniikun/status/1992590732662857794
+
+
+**Team:** niikun (Solo)
+
+**Demo:** This Space
+
+**Full Source:** https://github.com/niikun/A2A_xrpl_mcp
+
+---
+
 ## 🎯 Problem Statement
 
 As AI agents become more autonomous and powerful, we face critical challenges:
@@ -65,7 +100,7 @@ This project qualifies for **both tracks**:
 
 ## 🎥 Demo Video
 
-[**Watch the 3-minute demo here**](YOUR_VIDEO_LINK)
+[**Watch the 3-minute demo here**](https://www.youtube.com/watch?v=skF58ABgoE8)
 
 🎬 Demo shows:
 1. AI agent using MCP tools to solve user requests
@@ -94,7 +129,7 @@ echo "XRPL_SEED=sXXXXXXXXXXXXXXXXXXXXXXX" > .env
 
 ```bash
 # Clone repository
-git clone https://github.com/YOUR_USERNAME/A2A_xrpl_mcp
+git clone https://github.com/niikun/A2A_xrpl_mcp
 cd A2A_xrpl_mcp
 
 # Install dependencies
@@ -438,7 +473,8 @@ Apache License 2.0 - see [LICENSE](LICENSE) file
 ## 🔗 Links
 
 - **Project Repository**: https://github.com/niikun/A2A_xrpl_mcp
-- **Demo Video**: [YOUR_VIDEO_LINK]
+- **Demo Video**: https://www.youtube.com/watch?v=skF58ABgoE8
+- **Interactive Demo**: https://niikun.net/A2A_demo.html
 - **XRPL Explorer Example**: https://testnet.xrpl.org/transactions/8313F6124E4FEAEB545932DED7FB46CFD2E85203ED6756C9EE58B4943F01AA21
 - **MCP Specification**: https://modelcontextprotocol.io/
 - **A2A Trace Spec**: [a2a_xrpl_spec.md](./a2a_xrpl_spec.md)

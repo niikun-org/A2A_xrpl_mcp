@@ -1,0 +1,56 @@
+# HuggingFace Spaces Configuration for Docker deployment
+# Rename this to .spacesconfig.yaml or update existing one
+
+# Specify Docker SDK instead of Gradio
+sdk: docker
+
+# App file is not needed for Docker (uses Dockerfile)
+# app_file: app.py  # Not used with Docker SDK
+
+# Dockerfile location (default: ./Dockerfile)
+# dockerfile: Dockerfile
+
+# Python version (specified in Dockerfile)
+# python_version: "3.10"
+
+# Emoji for the Space
+emoji: 🔐
+
+# Color scheme
+colorFrom: blue
+colorTo: purple
+
+# Title
+title: A2A Trace Anchoring - Full Demo (IPFS + XRPL)
+
+# Short description
+short_description: Tamper-proof AI agent logging with IPFS and blockchain anchoring
+
+# Pinned (featured)
+pinned: false
+
+# License
+license: apache-2.0
+
+# Hardware - Docker requires at least "small" tier
+# Free tier: cpu-basic (no Docker support)
+# Paid tiers: cpu-upgrade, t4-small, t4-medium, a10g-small, a10g-large
+# For IPFS, cpu-upgrade should be sufficient
+suggested_hardware: cpu-upgrade
+
+# Suggested storage (IPFS needs some space)
+suggested_storage: small
+
+# Disable embedding
+disable_embedding: false
+
+# Environment variables (optional - can be set via Spaces UI)
+# Do NOT put secrets here! Use Spaces Secrets feature instead
+env:
+  - GRADIO_SERVER_NAME=0.0.0.0
+  - GRADIO_SERVER_PORT=7860
+  - IPFS_API_URL=/ip4/127.0.0.1/tcp/5001/http
+
+# Secrets that should be set via Spaces UI (not in this file):
+# - XRPL_SEED (from https://xrpl.org/xrp-testnet-faucet.html)
+# - OPENAI_API_KEY (if using OpenAI for LLM)

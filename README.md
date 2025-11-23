@@ -625,16 +625,122 @@ uv run pytest tests/test_xrpl.py::test_full_integration_anchor_and_verify -v
 10. Verification available via TX Hash
 ```
 
+## ⚠️ Current Limitations & Security Considerations
+
+### Unimplemented Features
+
+⚠️ **Signature functionality is NOT implemented**
+- Traces do not include cryptographic signatures proving authorship
+- Anyone with access to the system can create traces
+- `"signatures": []` field in JSON is currently empty
+
+⚠️ **PII masking is NOT implemented**
+- **DO NOT use with sensitive/production data without additional safeguards**
+- Personal information, API keys, passwords will be logged as-is
+- `"redactions"` field exists but does not perform automatic masking
+- **Recommendation**: Only use with test data or manually sanitize inputs
+
+### Security Best Practices
+
+#### 🔐 Environment Variables (.env)
+
+**NEVER commit `.env` to version control!**
+
+```bash
+# .gitignore should include:
+.env
+*.env
+.env.*
+```
+
+**Secure storage of XRPL_SEED:**
+```bash
+# Use restrictive permissions
+chmod 600 .env
+
+# For production, use:
+# - Hardware security modules (HSM)
+# - Cloud secret managers (AWS Secrets Manager, GCP Secret Manager)
+# - Environment-specific vaults (HashiCorp Vault)
+```
+
+**Testnet vs Mainnet:**
+- ✅ This project uses XRPL **Testnet** by default (test XRP, no real value)
+- ⚠️ **NEVER use mainnet seeds** in development/demo environments
+- 🔒 Testnet faucet: https://xrpl.org/xrp-testnet-faucet.html
+
+#### 🌐 Gradio UI Security
+
+⚠️ **Gradio UI is designed for LOCAL use only**
+
+**DO NOT expose publicly without:**
+1. **Authentication** (basic auth at minimum)
+2. **HTTPS/TLS encryption**
+3. **Rate limiting** to prevent abuse
+4. **Input validation** and sanitization
+
+**For public deployment:**
+```python
+# Add authentication in mcp/app.py
+demo.launch(
+    auth=("username", "password"),  # Add basic auth
+    ssl_certfile="cert.pem",        # Enable HTTPS
+    ssl_keyfile="key.pem"
+)
+```
+
+### Log & Trace File Management
+
+#### Disk Space Management
+
+Logs and traces can accumulate over time:
+
+```bash
+# Check current usage
+du -sh logs/ traces/
+
+# Rotate logs (keep last 30 days)
+find logs/ -name "*.jsonl" -mtime +30 -delete
+
+# Archive old traces
+tar -czf traces_archive_$(date +%Y%m%d).tar.gz traces/
+find traces/ -name "*.json" -mtime +90 -delete
+```
+
+#### Automated Cleanup (Cron Job Example)
+
+```bash
+# Add to crontab (crontab -e)
+# Run daily at 2am
+0 2 * * * find /path/to/logs -name "*.jsonl" -mtime +30 -delete
+0 2 * * * find /path/to/traces -name "*.json" -mtime +90 -delete
+```
+
+#### Log Retention Recommendations
+
+| File Type | Location | Retention | Notes |
+|-----------|----------|-----------|-------|
+| MCP Session Logs | `logs/events.jsonl` | 30 days | Contains all tool calls |
+| A2A Traces | `traces/*.json` | 90 days | Anchored traces (retrievable from IPFS) |
+| IPFS Pinned Content | IPFS Node | Permanent | Until unpinned manually |
+| XRPL Transactions | XRPL Ledger | Permanent | Immutable blockchain records |
+
+#### Privacy Considerations
+
+**Before anchoring to IPFS/XRPL:**
+- ✅ Review trace content for sensitive information
+- ✅ Remember: IPFS and XRPL are **public and permanent**
+- ✅ Once anchored, data **cannot be deleted** from the blockchain
+- ⚠️ Use only with data you're comfortable making public
+
+---
+
 ## Future Extensions
 
-The following features are in the spec but not yet implemented in this MVP:
+The following features are planned but not yet implemented:
 
 - **Signature functionality (EIP-191-like)**: Digital signatures to prove trace authenticity and authorship
-  - Currently: `"signatures": []` (empty array in JSON)
-  - Planned: Cryptographic signatures from actors to verify who created the trace
-- **Redaction (PII masking) features**: Privacy protection for sensitive information
-  - Currently: `"redactions": {"policy": "pii_mask", "masked_fields": []}` (default values only)
-  - Planned: Automatic PII detection and masking, GDPR compliance
+- **Redaction (PII masking)**: Automatic PII detection and masking, GDPR compliance
 - XRPL EVM sidechain with EAS compatibility
 - ZK proofs for content-private verification
 - Next.js viewer with timeline display

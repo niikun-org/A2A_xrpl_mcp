@@ -623,16 +623,122 @@ uv run pytest tests/test_xrpl.py::test_full_integration_anchor_and_verify -v
 10. TX Hashから検証可能
 ```
 
+## ⚠️ 現在の制約とセキュリティ上の注意
+
+### 未実装機能
+
+⚠️ **署名機能は未実装です**
+- トレースには作成者を証明する暗号署名が含まれていません
+- システムにアクセスできる人は誰でもトレースを作成できます
+- JSON内の`"signatures": []`フィールドは現在空です
+
+⚠️ **PIIマスキングは未実装です**
+- **本番データや機密データでは追加の保護措置なしに使用しないでください**
+- 個人情報、APIキー、パスワードはそのままログに記録されます
+- `"redactions"`フィールドは存在しますが、自動マスキングは行われません
+- **推奨**: テストデータのみを使用するか、入力を手動でサニタイズしてください
+
+### セキュリティのベストプラクティス
+
+#### 🔐 環境変数（.env）の管理
+
+**絶対に`.env`をバージョン管理にコミットしないでください！**
+
+```bash
+# .gitignoreに以下を含める:
+.env
+*.env
+.env.*
+```
+
+**XRPL_SEEDの安全な保管:**
+```bash
+# 制限的なパーミッションを使用
+chmod 600 .env
+
+# 本番環境では以下を使用:
+# - ハードウェアセキュリティモジュール（HSM）
+# - クラウドシークレットマネージャー（AWS Secrets Manager、GCP Secret Manager）
+# - 環境専用のVault（HashiCorp Vault）
+```
+
+**TestnetとMainnetの使い分け:**
+- ✅ このプロジェクトはデフォルトでXRPL **Testnet**を使用（テストXRP、実際の価値なし）
+- ⚠️ 開発/デモ環境で**Mainnetのシードを使用しないでください**
+- 🔒 Testnetフォーセット: https://xrpl.org/xrp-testnet-faucet.html
+
+#### 🌐 Gradio UIのセキュリティ
+
+⚠️ **Gradio UIはローカル使用のみを想定しています**
+
+**以下なしに公開しないでください:**
+1. **認証**（最低限ベーシック認証）
+2. **HTTPS/TLS暗号化**
+3. **レート制限**（悪用防止）
+4. **入力検証**とサニタイゼーション
+
+**公開デプロイメントの場合:**
+```python
+# mcp/app.pyに認証を追加
+demo.launch(
+    auth=("username", "password"),  # ベーシック認証を追加
+    ssl_certfile="cert.pem",        # HTTPSを有効化
+    ssl_keyfile="key.pem"
+)
+```
+
+### ログ・トレースファイルの運用管理
+
+#### ディスク容量管理
+
+ログとトレースは時間とともに蓄積されます：
+
+```bash
+# 現在の使用量を確認
+du -sh logs/ traces/
+
+# ログをローテーション（過去30日分を保持）
+find logs/ -name "*.jsonl" -mtime +30 -delete
+
+# 古いトレースをアーカイブ
+tar -czf traces_archive_$(date +%Y%m%d).tar.gz traces/
+find traces/ -name "*.json" -mtime +90 -delete
+```
+
+#### 自動クリーンアップ（Cronジョブの例）
+
+```bash
+# crontabに追加（crontab -e）
+# 毎日午前2時に実行
+0 2 * * * find /path/to/logs -name "*.jsonl" -mtime +30 -delete
+0 2 * * * find /path/to/traces -name "*.json" -mtime +90 -delete
+```
+
+#### ログ保持期間の推奨
+
+| ファイル種別 | 場所 | 保持期間 | 備考 |
+|-------------|------|---------|------|
+| MCPセッションログ | `logs/events.jsonl` | 30日 | すべてのツール呼び出しを含む |
+| A2Aトレース | `traces/*.json` | 90日 | アンカー済みトレース（IPFSから取得可能） |
+| IPFSピン済みコンテンツ | IPFSノード | 永続 | 手動でアンピンするまで |
+| XRPLトランザクション | XRPLレジャー | 永続 | 不変のブロックチェーン記録 |
+
+#### プライバシーに関する考慮事項
+
+**IPFS/XRPLにアンカリングする前に:**
+- ✅ トレース内容に機密情報がないか確認してください
+- ✅ 重要: IPFSとXRPLは**公開されており永続的**です
+- ✅ 一度アンカリングすると、データはブロックチェーンから**削除できません**
+- ⚠️ 公開しても問題ないデータのみを使用してください
+
+---
+
 ## 将来の拡張
 
-以下の機能は仕様書に含まれていますが、現在のMVPでは未実装です：
+以下の機能は計画されていますが、まだ実装されていません：
 
 - **署名機能（EIP-191-like）**: トレースの真正性と作成者を証明するデジタル署名
-  - 現状: `"signatures": []` （JSONに空配列として出力）
-  - 計画: アクター（ユーザー、AI等）による暗号署名でトレース作成者を検証
-- **Redaction（PII masking）機能**: 機密情報の保護
-  - 現状: `"redactions": {"policy": "pii_mask", "masked_fields": []}` （デフォルト値のみ）
-  - 計画: 個人情報の自動検出とマスキング、GDPR対応
+- **Redaction（PIIマスキング）**: 個人情報の自動検出とマスキング、GDPR対応
 - XRPL EVM サイドチェーンでのEAS互換化
 - ZK証明による内容非公開検証
 - Next.jsビューアでの時系列表示
