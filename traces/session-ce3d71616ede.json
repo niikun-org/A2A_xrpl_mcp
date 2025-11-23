@@ -1,0 +1,66 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-ce3d71616ede",
+    "createdAt": "2025-11-23T11:37:09.660411+00:00",
+    "actors": [
+      "assistant",
+      "tool:calculate",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "claude-3-5-sonnet-20241022",
+    "provider": "anthropic"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-23T11:37:09.660411+00:00",
+      "content": "What is 25 * 4?",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-23T11:37:09.666336+00:00",
+      "content": null,
+      "tool": "calculate",
+      "args": {
+        "expression": ""
+      },
+      "tool_call_id": "1"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-23T11:37:09.666336+00:00",
+      "content": "Error executing tool: Failed to evaluate expression: invalid syntax (<string>, line 0)",
+      "tool": null,
+      "args": null,
+      "tool_call_id": "1"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-23T11:37:09.666787+00:00",
+      "content": "I calculated that for you: Error executing tool: Failed to evaluate expression: invalid syntax (<string>, line 0)",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "6d829d2054a04093e66091df447be6badebe64dad56ee3137bce558bf68954a3",
+    "chunks": [
+      "6d829d2054a04093e66091df447be6badebe64dad56ee3137bce558bf68954a3"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

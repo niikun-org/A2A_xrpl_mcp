@@ -1,0 +1,66 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-e27a1105b728",
+    "createdAt": "2025-11-23T12:15:03.159553+00:00",
+    "actors": [
+      "assistant",
+      "tool:reverse_string",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "claude-3-5-sonnet-20241022",
+    "provider": "anthropic"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-23T12:15:03.159553+00:00",
+      "content": "Reverse 'hello world'",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-23T12:15:03.161792+00:00",
+      "content": null,
+      "tool": "reverse_string",
+      "args": {
+        "text": "Reverse 'hello world'"
+      },
+      "tool_call_id": "3"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-23T12:15:03.161792+00:00",
+      "content": "'dlrow olleh' esreveR",
+      "tool": null,
+      "args": null,
+      "tool_call_id": "3"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-23T12:15:03.162066+00:00",
+      "content": "Reversed: 'dlrow olleh' esreveR",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "6c2fca5459a1eb49d9a26c695553293882efa923955c2cb2ca5972a33a1dd5ac",
+    "chunks": [
+      "6c2fca5459a1eb49d9a26c695553293882efa923955c2cb2ca5972a33a1dd5ac"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

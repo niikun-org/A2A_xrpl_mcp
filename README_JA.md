@@ -6,10 +6,42 @@
 
 📖 **[English Version / 英語版はこちら](README.md)**
 
-## プレゼンテーション
-- PDF版の資料は以下を参照してください。  
+## 🆕 新機能: MCP (Model Context Protocol) 統合！
 
-https://acrobat.adobe.com/id/urn:aaid:sc:ap:949acc5e-b555-4f61-a1e1-70f191352c0e
+このプロジェクトは**リアルタイムMCPツール呼び出しロギング**をGradio UIで提供します！
+
+- 🔧 **5つのビルトインMCPツール**: 計算機、時計、文字数カウント、文字列反転、回文チェック
+- 📊 **リアルタイム統計**: チャット中のツール使用状況を追跡
+- 🔐 **完全なA2Aアンカリング**: すべてのMCPツール呼び出し → IPFS → XRPL with Merkle Root検証
+- 🌐 **インタラクティブUI**: AIとチャットして透明なツールロギングを実際に体験
+
+👉 **[クイックスタートガイド](QUICK_START.md)** | **[MCP統合の詳細](MCP_A2A_Trace_Logger_README.md)**
+
+### ⚠️ 前提条件
+
+**完全なアンカリング機能（IPFS + XRPL）にはDockerが必要です**:
+
+```bash
+# 1. Dockerをインストール（未インストールの場合）
+#    Mac/Windows: https://www.docker.com/products/docker-desktop/
+#    Linux: curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh
+
+# 2. IPFSコンテナを起動
+docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
+
+# 3. 依存関係をインストール
+pip install -r requirements-mcp.txt
+
+# 4. 今すぐ試す！
+./run_mcp_demo.sh
+# その後 http://localhost:7860 を開く
+```
+
+📖 **詳細なセットアップ手順は [QUICK_START.md](QUICK_START.md) を参照してください**
+
+---
+
+## プレゼンテーション
 
 - サービスイメージは以下を参照してください。
 
@@ -42,9 +74,36 @@ https://niikun.net/A2A_demo.html
 - 統合サービス（AnchorService）による一括処理
 - エンドツーエンドの検証システム
 
+### ✅ Phase 4 完了（MCP統合！）
+- 🆕 5つのツールを持つMCP (Model Context Protocol) サーバー
+- 🆕 リアルタイムMCPツール呼び出しロギング
+- 🆕 GradioベースのインタラクティブUI
+- 🆕 ハイブリッドJSON-RPC + A2Aトレース形式
+- 🆕 セッションベースのアンカリングワークフロー
+- 🆕 リアルタイム統計とツール使用状況追跡
+
 ## デモの実行方法
 
-### 🌐 インタラクティブWebデモ（最もわかりやすい！）
+### 🌐 NEW: MCPインタラクティブデモ（推奨！）
+
+新しい**MCP対応インタラクティブデモ**をGradio UIで試してみましょう：
+
+```bash
+./run_mcp_demo.sh
+# http://localhost:7860 を開く
+```
+
+**機能:**
+- 💬 実際のツールを使用するAIとチャット（MCP経由）
+- 📊 リアルタイムのツール使用統計を確認
+- 🔐 完全なセッションをIPFS + XRPLにアンカリング
+- 🔍 ブロックチェーン上で改ざん防止ログを検証
+
+📖 **[完全なMCPセットアップガイド](QUICK_START.md)**
+
+---
+
+### 🌐 静的Webデモ
 
 ブラウザで以下のHTMLファイルを開いてください：
 
@@ -53,7 +112,7 @@ https://niikun.net/A2A_demo.html
 open demo_interactive.html
 ```
 **[demo_interactive.html](demo_interactive.html)** - アニメーション付きの解説デモ
-- 🎬 6ステップのアニメーション
+- 🎬 7ステップアニメーション（MCP統合を含む！）
 - ▶️ 自動再生機能
 - ⌨️ キーボード操作（矢印キー、スペースキー）
 - 📊 リアルタイムの進捗バー
@@ -405,25 +464,44 @@ print(f'Merkle Match: {result.expected_root == result.computed_root}')
 │   ├── xrpl_client.py       # XRPL統合（Phase 3）
 │   ├── anchor_service.py    # 統合アンカリングサービス（Phase 3）
 │   └── verify.py            # 検証モジュール（Phase 3）
+├── mcp/                     # 🆕 MCP統合
+│   ├── app.py               # MCPデモ用Gradio UI
+│   ├── mcp_server.py        # 5つのツールを持つMCPサーバー
+│   ├── mcp_client.py        # MCPクライアント実装
+│   ├── logger.py            # ハイブリッドJSON-RPCロガー
+│   └── mcp_trace_builder.py # MCP → A2Aトレース変換
 ├── tests/                   # テストコード
 │   ├── test_ipfs.py         # IPFSクライアントのテスト
 │   └── test_xrpl.py         # XRPLクライアントのテスト
 ├── demo_haiku_trace.py      # デモ：Phase 1（ローカル保存）
 ├── demo_haiku_ipfs.py       # デモ：Phase 2（IPFS統合）
 ├── demo_full_anchor.py      # デモ：Phase 3（完全なアンカリング）
+├── test_mcp_basic.py        # 🆕 MCP統合テスト
+├── run_mcp_demo.sh          # 🆕 MCPデモ起動スクリプト
 ├── haiku_agent.py           # Haikuを生成するLangChainエージェント
-├── traces/                  # 生成されたトレースファイル
+├── logs/                    # 🆕 MCPセッションログ（JSON-RPC）
+├── traces/                  # 生成されたA2Aトレースファイル
+├── QUICK_START.md           # 🆕 MCPデモのクイックスタート
 └── a2a_xrpl_spec.md        # 仕様書
 ```
 
 ## 記録される情報
 
+### 従来のA2Aトレース
 - **ユーザーメッセージ**: エージェントへの入力
 - **AIメッセージ**: エージェントの応答
 - **ツール呼び出し**: check_haiku_lines等のツール実行
 - **ツール結果**: ツールの実行結果
 - **メタデータ**: モデル名、トークン使用量、タイムスタンプ
 - **完全性検証**: Merkle Root（改ざん検知用）
+
+### 🆕 MCPハイブリッドログ
+- **JSON-RPCリクエスト**: 完全なMCPツール呼び出し詳細
+- **JSON-RPCレスポンス**: 完全なツール実行結果
+- **セッションメタデータ**: セッションID、タイムスタンプ、アクター情報
+- **ツール統計**: ツール使用回数、成功/失敗率
+- **レイテンシ追跡**: 各ツール呼び出しの応答時間
+- **A2A変換**: ハイブリッドログをA2A形式に変換してアンカリング
 
 ## なぜこれが必要か
 
@@ -495,8 +573,19 @@ uv run pytest tests/test_xrpl.py::test_full_integration_anchor_and_verify -v
 - ✅ 完全な検証フロー（verify.py）
 - ✅ エンドツーエンドテスト
 
+### Phase 4: MCP統合
+- ✅ 5つのツールを持つMCPサーバー（calculator, clock, word_count, reverse_string, check_palindrome）
+- ✅ MCPクライアント実装
+- ✅ ハイブリッドJSON-RPCロギングシステム
+- ✅ GradioベースのインタラクティブUI
+- ✅ リアルタイムツール使用統計
+- ✅ セッションベースのログアンカリング
+- ✅ MCP → A2Aトレース変換
+- ✅ ワンクリックでIPFS + XRPLにアンカリング
+
 ## アーキテクチャ
 
+### 従来のLangChainフロー
 ```
 1. LangChainエージェント実行
    ↓
@@ -509,6 +598,29 @@ uv run pytest tests/test_xrpl.py::test_full_integration_anchor_and_verify -v
 5. XRPL記録: Payment TX + Memo {cid, root, meta}
    ↓
 6. 検証: TX Hash → Memo → CID → IPFS → JSON → Merkle Root再計算 → 比較
+```
+
+### 🆕 MCP統合フロー
+```
+1. ユーザーチャット（Gradio UI）
+   ↓
+2. LLMがMCPクライアント経由でMCPツールを呼び出し
+   ↓
+3. Logger: JSON-RPCリクエスト/レスポンスをキャプチャ
+   ↓
+4. logs/events.jsonl: ハイブリッドログ（JSON-RPC + A2Aメタデータ）
+   ↓
+5. ユーザーが"Anchor Session Logs"ボタンをクリック
+   ↓
+6. MCP Trace Builder: A2A形式に変換
+   ↓
+7. Merkle Root計算
+   ↓
+8. IPFSアップロード → CID取得
+   ↓
+9. XRPLアンカリング → TX Hash取得
+   ↓
+10. TX Hashから検証可能
 ```
 
 ## 将来の拡張

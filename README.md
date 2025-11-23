@@ -6,6 +6,41 @@
 
 📖 **[日本語版はこちら / Japanese Version](README_JA.md)**
 
+## 🆕 NEW: MCP (Model Context Protocol) Integration!
+
+This project now supports **real-time MCP tool invocation logging** with a Gradio UI!
+
+- 🔧 **5 Built-in MCP Tools**: Calculator, Clock, Word Counter, String Reverser, Palindrome Checker
+- 📊 **Real-time Statistics**: Track tool usage as you chat
+- 🔐 **Full A2A Anchoring**: Every MCP tool call → IPFS → XRPL with Merkle Root verification
+- 🌐 **Interactive UI**: Chat with AI and see transparent tool logging in action
+
+👉 **[Quick Start Guide](QUICK_START.md)** | **[MCP Integration Details](MCP_A2A_Trace_Logger_README.md)**
+
+### ⚠️ Prerequisites
+
+**Docker is required** for full anchoring features (IPFS + XRPL):
+
+```bash
+# 1. Install Docker (if not already installed)
+#    Mac/Windows: https://www.docker.com/products/docker-desktop/
+#    Linux: curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh
+
+# 2. Start IPFS container
+docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
+
+# 3. Install dependencies
+pip install -r requirements-mcp.txt
+
+# 4. Try it now!
+./run_mcp_demo.sh
+# Then open http://localhost:7860
+```
+
+📖 **See [QUICK_START.md](QUICK_START.md) for detailed setup instructions**
+
+---
+
 ## Presentation
 
 - View the PDF presentation here:
@@ -42,9 +77,36 @@ This project records execution traces of LangChain agents (haiku_agent) with:
 - Integrated service (AnchorService) for batch processing
 - End-to-end verification system
 
+### ✅ Phase 4 Complete (MCP Integration!)
+- 🆕 MCP (Model Context Protocol) server with 5 tools
+- 🆕 Real-time MCP tool invocation logging
+- 🆕 Gradio-based interactive UI
+- 🆕 Hybrid JSON-RPC + A2A trace format
+- 🆕 Session-based anchoring workflow
+- 🆕 Live statistics and tool usage tracking
+
 ## How to Run Demos
 
-### 🌐 Interactive Web Demo (Most User-Friendly!)
+### 🌐 NEW: MCP Interactive Demo (Recommended!)
+
+Try the new **MCP-powered interactive demo** with Gradio UI:
+
+```bash
+./run_mcp_demo.sh
+# Open http://localhost:7860
+```
+
+**Features:**
+- 💬 Chat with AI that uses real tools via MCP
+- 📊 See real-time tool usage statistics
+- 🔐 Anchor complete sessions to IPFS + XRPL
+- 🔍 Verify tamper-proof logs on blockchain
+
+📖 **[Full MCP Setup Guide](QUICK_START.md)**
+
+---
+
+### 🌐 Static Web Demos
 
 Open the following HTML files in your browser:
 
@@ -53,7 +115,7 @@ Open the following HTML files in your browser:
 open demo_interactive.html
 ```
 **[demo_interactive.html](demo_interactive.html)** - Animated explanation demo
-- 🎬 6-step animation
+- 🎬 7-step animation (including MCP integration!)
 - ▶️ Auto-play feature
 - ⌨️ Keyboard controls (arrow keys, space bar)
 - 📊 Real-time progress bar
@@ -404,25 +466,44 @@ Generated JSON includes:
 │   ├── xrpl_client.py       # XRPL integration (Phase 3)
 │   ├── anchor_service.py    # Integrated anchoring service (Phase 3)
 │   └── verify.py            # Verification module (Phase 3)
+├── mcp/                     # 🆕 MCP Integration
+│   ├── app.py               # Gradio UI for MCP demo
+│   ├── mcp_server.py        # MCP server with 5 tools
+│   ├── mcp_client.py        # MCP client implementation
+│   ├── logger.py            # Hybrid JSON-RPC logger
+│   └── mcp_trace_builder.py # MCP → A2A trace conversion
 ├── tests/                   # Test code
 │   ├── test_ipfs.py         # IPFS client tests
 │   └── test_xrpl.py         # XRPL client tests
 ├── demo_haiku_trace.py      # Demo: Phase 1 (local storage)
 ├── demo_haiku_ipfs.py       # Demo: Phase 2 (IPFS integration)
 ├── demo_full_anchor.py      # Demo: Phase 3 (full anchoring)
+├── test_mcp_basic.py        # 🆕 MCP integration tests
+├── run_mcp_demo.sh          # 🆕 MCP demo launcher
 ├── haiku_agent.py           # LangChain agent that generates Haiku
-├── traces/                  # Generated trace files
+├── logs/                    # 🆕 MCP session logs (JSON-RPC)
+├── traces/                  # Generated A2A trace files
+├── QUICK_START.md           # 🆕 Quick start for MCP demo
 └── a2a_xrpl_spec.md        # Specification
 ```
 
 ## Recorded Information
 
+### Traditional A2A Traces
 - **User Messages**: Input to agent
 - **AI Messages**: Agent responses
 - **Tool Calls**: Tool executions like check_haiku_lines
 - **Tool Results**: Tool execution results
 - **Metadata**: Model name, token usage, timestamps
 - **Integrity Verification**: Merkle Root (for tamper detection)
+
+### 🆕 MCP Hybrid Logs
+- **JSON-RPC Requests**: Full MCP tool invocation details
+- **JSON-RPC Responses**: Complete tool execution results
+- **Session Metadata**: Session ID, timestamps, actor info
+- **Tool Statistics**: Tool usage counts, success/failure rates
+- **Latency Tracking**: Response time for each tool call
+- **A2A Conversion**: Hybrid logs convert to A2A format for anchoring
 
 ## Why This Is Needed
 
@@ -494,8 +575,19 @@ uv run pytest tests/test_xrpl.py::test_full_integration_anchor_and_verify -v
 - ✅ Complete verification flow (verify.py)
 - ✅ End-to-end testing
 
+### Phase 4: MCP Integration
+- ✅ MCP server with 5 tools (calculator, clock, word_count, reverse_string, check_palindrome)
+- ✅ MCP client implementation
+- ✅ Hybrid JSON-RPC logging system
+- ✅ Gradio-based interactive UI
+- ✅ Real-time tool usage statistics
+- ✅ Session-based log anchoring
+- ✅ MCP → A2A trace conversion
+- ✅ One-click anchoring to IPFS + XRPL
+
 ## Architecture
 
+### Traditional LangChain Flow
 ```
 1. LangChain agent execution
    ↓
@@ -508,6 +600,29 @@ uv run pytest tests/test_xrpl.py::test_full_integration_anchor_and_verify -v
 5. XRPL recording: Payment TX + Memo {cid, root, meta}
    ↓
 6. Verification: TX Hash → Memo → CID → IPFS → JSON → recalculate Merkle Root → compare
+```
+
+### 🆕 MCP Integration Flow
+```
+1. User Chat (Gradio UI)
+   ↓
+2. LLM calls MCP tools via MCP Client
+   ↓
+3. Logger: Capture JSON-RPC request/response
+   ↓
+4. logs/events.jsonl: Hybrid log (JSON-RPC + A2A metadata)
+   ↓
+5. User clicks "Anchor Session Logs"
+   ↓
+6. MCP Trace Builder: Convert to A2A format
+   ↓
+7. Merkle Root calculation
+   ↓
+8. IPFS upload → get CID
+   ↓
+9. XRPL anchoring → TX Hash
+   ↓
+10. Verification available via TX Hash
 ```
 
 ## Future Extensions

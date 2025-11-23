@@ -282,8 +282,9 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔐 A2A Trace Anchoring</h1>
-            <p>AIエージェントの実行記録を改ざん不可能にする仕組み</p>
+            <h1>🔐 A2A Trace Anchoring on XRPL</h1>
+            <p>🆕 MCP統合！AIエージェントの実行記録を改ざん不可能にする仕組み</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Model Context Protocol (MCP) → IPFS → XRPL Blockchain</p>
         </div>
 
         <div class="controls">
@@ -304,10 +305,49 @@
     <script>
         const steps = [
             {
-                title: "AIエージェント実行",
-                description: "ユーザーがAIエージェントに「詩を書いて」とリクエスト",
+                title: "🆕 MCPインタラクティブデモ",
+                description: "GradioUIでAIとチャット - すべてのツール呼び出しを記録",
                 content: `
 <div class="animation-box" id="step0-anim">
+    <span class="pulse">💬 Gradio UIでAIと対話中...</span>
+</div>
+<div class="data-box">
+    <strong>🔧 MCP (Model Context Protocol):</strong><br>
+    ・AIが5つのツールを使用可能<br>
+    ・計算機、時計、文字数カウント、文字列反転、回文チェック<br>
+    ・すべてのツール呼び出しがJSON-RPCで記録される
+</div>
+<div class="code-block">ユーザー: 「25 * 4はいくつ？」
+↓
+AI → MCP Client → MCP Server
+↓
+Tool: calculate(expression="25 * 4")
+↓
+結果: 100
+↓
+Logger: すべてJSON-RPCで記録
+logs/events.jsonl に保存</div>
+<div class="stats">
+    <div class="stat-card">
+        <div class="stat-label">ツール数</div>
+        <div class="stat-value">5</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">記録形式</div>
+        <div class="stat-value">JSON-RPC</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">リアルタイム</div>
+        <div class="stat-value">✓</div>
+    </div>
+</div>
+                `
+            },
+            {
+                title: "AIエージェント実行（従来型）",
+                description: "LangChainエージェントの例 - Haiku生成",
+                content: `
+<div class="animation-box" id="step1-anim">
     <span class="pulse">🤖 AIエージェントが動作中...</span>
 </div>
 <div class="data-box">
@@ -330,7 +370,7 @@ AI: Haikuを生成
                 title: "A2A標準形式に変換",
                 description: "実行ログを国際標準のA2A形式（JSON）に変換",
                 content: `
-<div class="animation-box" id="step1-anim">
+<div class="animation-box" id="step2-anim">
     <span class="pulse">📋 変換処理中...</span>
 </div>
 <div class="stats">
@@ -365,7 +405,7 @@ AI: Haikuを生成
                 title: "Merkle Root計算",
                 description: "データの「指紋」を作成（改ざん検知用）",
                 content: `
-<div class="animation-box" id="step2-anim">
+<div class="animation-box" id="step3-anim">
     <span class="pulse">🔐 ハッシュ計算中...</span>
 </div>
 <div class="data-box">
@@ -388,7 +428,7 @@ Merkle Root: <span class="highlight">43b10e78082bfd87...</span></div>
                 title: "IPFS保存",
                 description: "分散ストレージ（IPFS）に永久保存",
                 content: `
-<div class="animation-box" id="step3-anim">
+<div class="animation-box" id="step4-anim">
     <span class="pulse">🌐 IPFSにアップロード中...</span>
 </div>
 <div class="data-box">
@@ -422,7 +462,7 @@ CID取得: <span class="highlight">bafybeigdyrzt5sfp7udm7hu76uh7y26nf...</span>
                 title: "XRPL記録",
                 description: "ブロックチェーン（XRP Ledger）に記録",
                 content: `
-<div class="animation-box" id="step4-anim">
+<div class="animation-box" id="step5-anim">
     <span class="pulse">📘 ブロックチェーンに記録中...</span>
 </div>
 <div class="data-box">
@@ -455,11 +495,18 @@ TX Hash: <span class="highlight">1A2B3C4D5E6F...</span>
                 `
             },
             {
-                title: "検証",
-                description: "誰でも改ざんをチェックできる",
+                title: "検証 🆕 Gradio UIで可能！",
+                description: "誰でも改ざんをチェックできる - UIから簡単に検証",
                 content: `
-<div class="animation-box" id="step5-anim">
+<div class="animation-box" id="step6-anim">
     <span class="pulse">🔍 検証中...</span>
+</div>
+<div class="data-box" style="background: #e6f7ff; border-left-color: #1890ff;">
+    <strong>🆕 Gradio UIで検証:</strong><br>
+    ・トランザクションハッシュを入力<br>
+    ・"🔍 Verify Trace"ボタンをクリック<br>
+    ・自動的に検証プロセスを実行<br>
+    ・結果を視覚的に表示！
 </div>
 <div class="data-box">
     <strong>🔍 検証フロー:</strong><br>

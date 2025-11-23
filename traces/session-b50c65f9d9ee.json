@@ -1,0 +1,134 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-b50c65f9d9ee",
+    "createdAt": "2025-11-23T11:52:04.359497+00:00",
+    "actors": [
+      "assistant",
+      "tool:calculate",
+      "tool:get_current_time",
+      "tool:reverse_string",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "claude-3-5-sonnet-20241022",
+    "provider": "anthropic"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-23T11:52:04.359497+00:00",
+      "content": "What is 25 * 4?",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-23T11:52:04.362783+00:00",
+      "content": null,
+      "tool": "calculate",
+      "args": {
+        "expression": "25 * 4"
+      },
+      "tool_call_id": "1"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-23T11:52:04.362783+00:00",
+      "content": "Result: 100.0",
+      "tool": null,
+      "args": null,
+      "tool_call_id": "1"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-23T11:52:04.363049+00:00",
+      "content": "I calculated that for you: Result: 100.0",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "human_message",
+      "ts": "2025-11-23T11:55:42.391043+00:00",
+      "content": "What time is it?",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-23T11:55:42.394085+00:00",
+      "content": null,
+      "tool": "get_current_time",
+      "args": {},
+      "tool_call_id": "2"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-23T11:55:42.394085+00:00",
+      "content": "Current time: 2025-11-23T11:55:42.393327",
+      "tool": null,
+      "args": null,
+      "tool_call_id": "2"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-23T11:55:42.394347+00:00",
+      "content": "Current time: 2025-11-23T11:55:42.393327",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "human_message",
+      "ts": "2025-11-23T11:57:14.159127+00:00",
+      "content": "Reverse 'hello world",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-23T11:57:14.161590+00:00",
+      "content": null,
+      "tool": "reverse_string",
+      "args": {
+        "text": "Reverse 'hello world"
+      },
+      "tool_call_id": "3"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-23T11:57:14.161590+00:00",
+      "content": "dlrow olleh' esreveR",
+      "tool": null,
+      "args": null,
+      "tool_call_id": "3"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-23T11:57:14.161846+00:00",
+      "content": "Reversed: dlrow olleh' esreveR",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "c5d3de7173b4ebed09596d4703e2a541d06f6df06f718f92f98768d9d438a536",
+    "chunks": [
+      "c5d3de7173b4ebed09596d4703e2a541d06f6df06f718f92f98768d9d438a536"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

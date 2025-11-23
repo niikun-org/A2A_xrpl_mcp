@@ -1,0 +1,66 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-5810c196fa1a",
+    "createdAt": "2025-11-23T13:07:47.911421+00:00",
+    "actors": [
+      "assistant",
+      "tool:count_words",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "claude-3-5-sonnet-20241022",
+    "provider": "anthropic"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-23T13:07:47.911421+00:00",
+      "content": "How many words in this sentence?",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-23T13:07:47.913967+00:00",
+      "content": null,
+      "tool": "count_words",
+      "args": {
+        "text": "How many words in this sentence?"
+      },
+      "tool_call_id": "2"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-23T13:07:47.913967+00:00",
+      "content": "Word count: 6",
+      "tool": null,
+      "args": null,
+      "tool_call_id": "2"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-23T13:07:47.914318+00:00",
+      "content": "Word count: 6",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "7067d7aca93ede85dcb49f4f6421790d53f105d22d726619c01110b68e32a0c5",
+    "chunks": [
+      "7067d7aca93ede85dcb49f4f6421790d53f105d22d726619c01110b68e32a0c5"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

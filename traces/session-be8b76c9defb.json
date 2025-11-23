@@ -1,0 +1,64 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-be8b76c9defb",
+    "createdAt": "2025-11-23T12:58:53.705949+00:00",
+    "actors": [
+      "assistant",
+      "tool:get_current_time",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "claude-3-5-sonnet-20241022",
+    "provider": "anthropic"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-23T12:58:53.705949+00:00",
+      "content": "What time is it?",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-23T12:58:53.712062+00:00",
+      "content": null,
+      "tool": "get_current_time",
+      "args": {},
+      "tool_call_id": "1"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-23T12:58:53.712062+00:00",
+      "content": "Current time: 2025-11-23T12:58:53.711031",
+      "tool": null,
+      "args": null,
+      "tool_call_id": "1"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-23T12:58:53.712318+00:00",
+      "content": "Current time: 2025-11-23T12:58:53.711031",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "c81b3b118c0b4050fe7902990a7fcc283a236fbde906821e740e6e8724b9afae",
+    "chunks": [
+      "c81b3b118c0b4050fe7902990a7fcc283a236fbde906821e740e6e8724b9afae"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

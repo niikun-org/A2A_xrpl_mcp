@@ -1,0 +1,100 @@
+{
+  "traceVersion": "a2a-0.1",
+  "session": {
+    "id": "session-4462d4068b63",
+    "createdAt": "2025-11-23T11:59:24.147418+00:00",
+    "actors": [
+      "assistant",
+      "tool:calculate",
+      "user"
+    ]
+  },
+  "model": {
+    "name": "claude-3-5-sonnet-20241022",
+    "provider": "anthropic"
+  },
+  "events": [
+    {
+      "type": "human_message",
+      "ts": "2025-11-23T11:59:24.147418+00:00",
+      "content": "What is 25 * 4?",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-23T11:59:24.153072+00:00",
+      "content": null,
+      "tool": "calculate",
+      "args": {
+        "expression": "25 * 4"
+      },
+      "tool_call_id": "1"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-23T11:59:24.153072+00:00",
+      "content": "Result: 100.0",
+      "tool": null,
+      "args": null,
+      "tool_call_id": "1"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-23T11:59:24.153486+00:00",
+      "content": "I calculated that for you: Result: 100.0",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "human_message",
+      "ts": "2025-11-23T12:13:09.215711+00:00",
+      "content": "What is 25 * 4?",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    },
+    {
+      "type": "ai_tool_call",
+      "ts": "2025-11-23T12:13:09.222878+00:00",
+      "content": null,
+      "tool": "calculate",
+      "args": {
+        "expression": "25 * 4"
+      },
+      "tool_call_id": "2"
+    },
+    {
+      "type": "tool_result",
+      "ts": "2025-11-23T12:13:09.222878+00:00",
+      "content": "Result: 100.0",
+      "tool": null,
+      "args": null,
+      "tool_call_id": "2"
+    },
+    {
+      "type": "ai_message",
+      "ts": "2025-11-23T12:13:09.223942+00:00",
+      "content": "I calculated that for you: Result: 100.0",
+      "tool": null,
+      "args": null,
+      "tool_call_id": null
+    }
+  ],
+  "usage": [],
+  "hashing": {
+    "algorithm": "sha256",
+    "chunk_size": 4096,
+    "chunkMerkleRoot": "b9689ea929256ad7980feeeb500d875b41f164855016cafec4e7e00f74792f0f",
+    "chunks": [
+      "b9689ea929256ad7980feeeb500d875b41f164855016cafec4e7e00f74792f0f"
+    ]
+  },
+  "signatures": [],
+  "redactions": {
+    "policy": "pii_mask",
+    "masked_fields": []
+  }
+}

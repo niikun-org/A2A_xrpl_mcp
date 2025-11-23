@@ -53,7 +53,8 @@ class MCPChatApp:
     def get_anchor_service(self):
         """Get or create anchor service."""
         if self._anchor_service is None:
-            ipfs_url = os.getenv("IPFS_API_URL", "http://127.0.0.1:5001")
+            # Use multiaddr format for IPFS, not HTTP URL
+            ipfs_url = os.getenv("IPFS_API_URL", "/ip4/127.0.0.1/tcp/5001/http")
             xrpl_node = os.getenv("XRPL_NODE_URL", "https://s.altnet.rippletest.net:51234")
             xrpl_seed = os.getenv("XRPL_SEED")
 
@@ -109,8 +110,11 @@ class MCPChatApp:
         # Log AI message
         self.logger.log_ai_message(session_id, response_text)
 
-        # Update history
-        history = history + [[message, response_text]]
+        # Update history with new Gradio 6.0 format
+        history = history + [
+            {"role": "user", "content": message},
+            {"role": "assistant", "content": response_text}
+        ]
 
         # Update session state
         session_state["messages"].append({
@@ -148,9 +152,13 @@ class MCPChatApp:
             # Extract expression
             # Simple pattern matching for demo
             import re
+            # Match mathematical expressions (numbers and operators)
             numbers_ops = re.findall(r'[\d\+\-\*/\(\)\.\s]+', user_message)
-            if numbers_ops:
-                expr = numbers_ops[0].strip()
+            # Filter out matches that are too short or only whitespace
+            valid_exprs = [e.strip() for e in numbers_ops if e.strip() and any(c.isdigit() for c in e)]
+
+            if valid_exprs:
+                expr = valid_exprs[0]
                 try:
                     result = self.mcp_client.call_tool_simple(
                         session_id, "calculate", expression=expr
@@ -158,6 +166,8 @@ class MCPChatApp:
                     return f"I calculated that for you: {result}"
                 except Exception as e:
                     return f"I tried to calculate but got an error: {str(e)}"
+            else:
+                return "I detected you want to calculate something, but couldn't find a valid expression. Please try something like: 'Calculate 25 * 4'"
 
         elif "time" in msg_lower or "date" in msg_lower:
             try:
@@ -278,30 +288,128 @@ class MCPChatApp:
             with open(trace_file, "w", encoding="utf-8") as f:
                 f.write(trace.to_json())
 
+            # Progress tracking
+            progress_output = [
+                "## 🔐 Anchoring Process\n",
+                "### Step 1: Building A2A Trace ✅",
+                f"- Session ID: `{session_id}`",
+                f"- Events: {len(logs)}",
+                f"- Model: {model_name}",
+                f"- Merkle Root: `{trace.hashing.chunkMerkleRoot[:16]}...`\n",
+            ]
+
             # Anchor to IPFS + XRPL
+            progress_output.append("### Step 2: Uploading to IPFS 📤")
             anchor_service = self.get_anchor_service()
             result = anchor_service.anchor_trace(trace)
 
-            # Format result
-            output = [
-                "✅ **Anchoring Complete!**\n",
-                f"**Session ID:** `{result['session_id']}`",
+            progress_output.extend([
+                f"- IPFS CID: `{result['cid']}`",
+                f"- Content pinned to IPFS ✅\n",
+            ])
+
+            progress_output.extend([
+                "### Step 3: Anchoring to XRPL Blockchain ⛓️",
+                f"- Transaction Hash: `{result['tx_hash']}`",
+                f"- Ledger Index: {result['ledger_index']}",
+                f"- Network: Testnet ✅\n",
+            ])
+
+            progress_output.extend([
+                "---\n",
+                "## ✅ Anchoring Complete!\n",
+                f"**Session ID:** `{result['session_id']}`\n",
                 f"**IPFS CID:** `{result['cid']}`",
-                f"**IPFS URL:** {result['ipfs_url']}",
+                f"**IPFS URL:** {result['ipfs_url']}\n",
                 f"**XRPL TX Hash:** `{result['tx_hash']}`",
                 f"**Ledger Index:** {result['ledger_index']}",
-                f"**Merkle Root:** `{result['merkle_root'][:16]}...`",
+                f"**Merkle Root:** `{result['merkle_root'][:16]}...`\n",
                 f"**Events:** {result['events_count']}",
-                f"**Model:** {result['model']}",
-                f"\n**Local File:** `{trace_file}`",
-                f"\n**XRPL Explorer:**",
-                f"https://testnet.xrpl.org/transactions/{result['tx_hash']}"
+                f"**Model:** {result['model']}\n",
+                f"**Local File:** `{trace_file}`\n",
+                f"**🔍 Verify on XRPL Explorer:**",
+                f"https://testnet.xrpl.org/transactions/{result['tx_hash']}\n",
+                "---\n",
+                "💡 **Note:** This trace is now permanently anchored and can be independently verified by anyone!"
+            ])
+
+            return "\n".join(progress_output)
+
+        except Exception as e:
+            return f"❌ **Anchoring Failed**\n\nError: {str(e)}"
+
+    def verify_anchored_trace(self, tx_hash: str) -> str:
+        """Verify an anchored trace from XRPL transaction hash.
+
+        Args:
+            tx_hash: XRPL transaction hash
+
+        Returns:
+            Verification result message
+        """
+        try:
+            from a2a_anchor.verify import TraceVerifier
+            from a2a_anchor.xrpl_client import create_xrpl_client
+            from a2a_anchor.ipfs_client import create_ipfs_client
+            import os
+
+            # Create clients
+            xrpl_client = create_xrpl_client(
+                os.getenv("XRPL_NODE_URL", "https://s.altnet.rippletest.net:51234"),
+                seed=os.getenv("XRPL_SEED"),
+                network="testnet"
+            )
+            ipfs_client = create_ipfs_client()
+            verifier = TraceVerifier(xrpl_client, ipfs_client)
+
+            # Verify
+            output = [
+                "## 🔍 Verification Process\n",
+                f"**Transaction Hash:** `{tx_hash}`\n",
             ]
+
+            output.append("### Step 1: Retrieving memo from XRPL... 📥")
+            result = verifier.verify(tx_hash)
+
+            output.extend([
+                "✅ Memo retrieved\n",
+                "### Step 2: Fetching trace from IPFS... 📥",
+                f"- CID: `{result.cid}`",
+                "✅ Trace retrieved\n",
+                "### Step 3: Recalculating Merkle Root... 🔐",
+                f"- Expected: `{result.expected_root[:16]}...`",
+                f"- Computed: `{result.computed_root[:16]}...`",
+            ])
+
+            if result.verified:
+                # Get additional details from the trace
+                events_count = result.details.get('trace_events', 'N/A')
+                model = result.details.get('model', 'N/A')
+
+                output.extend([
+                    "✅ **MATCH!**\n",
+                    "---\n",
+                    "## ✅ VERIFICATION PASSED\n",
+                    f"**Session ID:** `{result.session_id}`",
+                    f"**IPFS CID:** `{result.cid}`",
+                    f"**Merkle Root:** `{result.expected_root[:16]}...`",
+                    f"**Events:** {events_count}",
+                    f"**Model:** {model}\n",
+                    "---\n",
+                    "💡 **This trace is authentic and has not been tampered with!**"
+                ])
+            else:
+                output.extend([
+                    "❌ **MISMATCH!**\n",
+                    "---\n",
+                    "## ❌ VERIFICATION FAILED\n",
+                    "**Warning:** The trace may have been tampered with!"
+                ])
 
             return "\n".join(output)
 
         except Exception as e:
-            return f"❌ **Anchoring Failed**\n\nError: {str(e)}"
+            return f"❌ **Verification Failed**\n\nError: {str(e)}"
 
 
 def create_gradio_app() -> gr.Blocks:
@@ -313,8 +421,7 @@ def create_gradio_app() -> gr.Blocks:
     app = MCPChatApp()
 
     with gr.Blocks(
-        title="MCP-Aware A2A Trace Logger",
-        theme=gr.themes.Soft()
+        title="MCP-Aware A2A Trace Logger"
     ) as demo:
         gr.Markdown("""
         # 🔗 MCP-Aware A2A Trace Logger
@@ -322,16 +429,20 @@ def create_gradio_app() -> gr.Blocks:
         ### Transparent & Verifiable AI Action Logging
 
         This demo shows how AI agent actions via MCP (Model Context Protocol) can be:
-        - **Logged** in real-time (JSON-RPC format)
-        - **Converted** to A2A trace format
-        - **Anchored** to IPFS + XRPL for tamper-proof verification
+        - 📝 **Logged** in real-time (JSON-RPC format)
+        - 🔄 **Converted** to A2A trace format with Merkle Root
+        - 📤 **Uploaded** to IPFS (distributed storage)
+        - ⛓️ **Anchored** to XRPL blockchain for tamper-proof verification
+        - 🔍 **Verified** independently by anyone
 
-        Try asking the AI to:
+        **Try asking the AI to:**
         - Calculate: "What is 25 * 4?"
         - Get time: "What time is it?"
         - Count words: "How many words in this sentence?"
         - Reverse text: "Reverse 'hello world'"
         - Check palindrome: "Is 'racecar' a palindrome?"
+
+        **Then click "Anchor Session Logs" to permanently record your conversation!**
         """)
 
         # Session state
@@ -373,6 +484,23 @@ def create_gradio_app() -> gr.Blocks:
 
                 anchor_result = gr.Markdown("*Not anchored yet*")
 
+                gr.Markdown("---")
+                gr.Markdown("### 🔍 Verify Anchored Trace")
+
+                verify_tx_input = gr.Textbox(
+                    label="XRPL Transaction Hash",
+                    placeholder="Enter TX hash to verify...",
+                    info="Verify any anchored trace"
+                )
+
+                verify_btn = gr.Button(
+                    "🔍 Verify Trace",
+                    variant="secondary",
+                    size="lg"
+                )
+
+                verify_result = gr.Markdown("*Enter TX hash to verify*")
+
         # Event handlers
         def send_message(msg, history, state):
             if not msg.strip():
@@ -386,6 +514,11 @@ def create_gradio_app() -> gr.Blocks:
 
         def anchor_logs(state, model_name):
             return app.anchor_session(state, model_name)
+
+        def verify_trace(tx_hash):
+            if not tx_hash.strip():
+                return "*Enter TX hash to verify*"
+            return app.verify_anchored_trace(tx_hash)
 
         # Wire up events
         msg_input.submit(
@@ -415,6 +548,12 @@ def create_gradio_app() -> gr.Blocks:
             anchor_logs,
             inputs=[session_state, model_input],
             outputs=[anchor_result]
+        )
+
+        verify_btn.click(
+            verify_trace,
+            inputs=[verify_tx_input],
+            outputs=[verify_result]
         )
 
         gr.Markdown("""

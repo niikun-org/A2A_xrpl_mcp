@@ -1,10 +1,50 @@
 # 🚀 Quick Start Guide
 
+## Prerequisites
+
+### Docker Installation Required
+
+This project requires **Docker** to run IPFS for full anchoring functionality.
+
+**Install Docker:**
+- **Mac/Windows**: [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- **Linux**:
+  ```bash
+  curl -fsSL https://get.docker.com -o get-docker.sh
+  sudo sh get-docker.sh
+  ```
+
+**Verify Docker is running:**
+```bash
+docker --version
+docker ps
+```
+
+---
+
 ## For Local Development
 
-### 1. Start IPFS (Optional but recommended for full features)
+### 1. Start IPFS (Required for anchoring features)
 
+**First time setup:**
 ```bash
+# Pull IPFS image and start container
+docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
+
+# Verify IPFS is running
+curl http://localhost:5001/api/v0/version
+```
+
+**If container already exists:**
+```bash
+# Check container status
+docker ps -a | grep ipfs
+
+# Start existing container
+docker start ipfs
+
+# If you need to recreate it
+docker rm -f ipfs
 docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
 ```
 
