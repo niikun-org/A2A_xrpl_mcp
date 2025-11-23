@@ -1,0 +1,20 @@
+# MCP-Aware A2A Trace Logger - Dependencies
+
+# Web Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+gradio>=4.0.0
+
+# HTTP Client
+requests>=2.31.0
+
+# Existing A2A dependencies
+langchain>=1.0.3
+langchain-openai>=1.0.1
+langgraph>=1.0.2
+python-dotenv>=1.2.1
+ipfshttpclient>=0.8.0a2
+xrpl-py>=2.0.0
+
+# Data validation
+pydantic>=2.0.0

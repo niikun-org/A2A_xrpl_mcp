@@ -108,7 +108,8 @@ docker run -d --name ipfs -p 5001:5001 -p 8080:8080 ipfs/kubo
 docker ps -a | grep ipfs
 
 # 停止している場合は再起動
-docker start ipfs
+
+
 
 # エラーが出る場合は削除して再作成
 docker rm -f ipfs
